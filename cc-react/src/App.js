@@ -3,16 +3,22 @@ import { Container } from 'reactstrap';
 import TagCloud from 'react-tag-cloud';
 import randomColor from 'randomcolor';
 
-const  App = () => {
+const App = () => {
   const [tweets, setTweets] = useState([]);
-
   useEffect(() => {
     async function fetchTweets() {
-      const data = [];
-      // setTweets(data);
+      try {
+        const response = await fetch('http://localhost:3000/trendingTopics');
+        const data = await response.json()
+        const tweetMap = new Map()
+        data.forEach(tweet => {
+          tweetMap.set(tweet.value.name.trim(), tweet)
+        })
+        setTweets(Array.from(tweetMap.values()));
+      } catch (err) {
+      }
     }
-    // fetchTweets();
-    setTweets(['this is a test', 'this is another test', "this is quite nice actually",])
+    fetchTweets();
   }, []);
 
   const tagCloudStyles = {
@@ -28,15 +34,15 @@ const  App = () => {
 
   return (
     <Container className="my-5">
-      <h1 style={{textAlign: 'center'}} className="mb-4">Trending Words</h1>
-      <TagCloud style={{ width: '100%', height: '400px' }} className="tag-cloud">
-        {tweets.map((tweet) =>
-          tweet.split(' ').map((word) => (
-            <div key={word} style={tagCloudStyles}>
-              {word}
-            </div>
-          ))
-        )}
+      <h1 style={{ textAlign: 'center' }} className="mb-4">Trending Words</h1>
+      <TagCloud style={{ width: '100%', height: '500px' }} className="tag-cloud">
+        {tweets !== null ? tweets.map((tweet) => {
+          const name = tweet.value.name;
+          return (<div key={tweet.id} style={tagCloudStyles}>
+            <span>{name}</span>
+          </div>)
+        }
+        ) : null}
       </TagCloud>
     </Container>
   );

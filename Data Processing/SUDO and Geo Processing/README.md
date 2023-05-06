@@ -12,15 +12,15 @@
 
 
 
-import geopandas as gpd == 0.12.2
-from geopandas import GeoDataFrame
-import pandas as pd ==  2.0.0 
-import couchdb == 1.2
-import json
-import geojson ==  3.0.1 
-from collections import Counter
-import numpy as np ==1.23.5     
-from array import array
-from shapely.geometry import box
-import wikipedia ==  1.4.0  
-import re == 2.28.2
+import geopandas as gpd == 0.12.2  
+from geopandas import GeoDataFrame  
+import pandas as pd ==  2.0.0   
+import couchdb == 1.2  
+import json  
+import geojson ==  3.0.1   
+from collections import Counter  
+import numpy as np ==1.23.5        
+from array import array  
+from shapely.geometry import box  
+import wikipedia ==  1.4.0    
+import re == 2.28.2  

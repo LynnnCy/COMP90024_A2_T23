@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container } from 'reactstrap';
 import TagCloud from 'react-tag-cloud';
 import randomColor from 'randomcolor';
+import Map from './Map'
 
 const App = () => {
   const [tweets, setTweets] = useState([]);
@@ -32,6 +33,7 @@ const App = () => {
     justifyContent: 'center',
   };
 
+
   return (
     <Container className="my-5">
       <h1 style={{ textAlign: 'center' }} className="mb-4">Trending Words</h1>
@@ -44,6 +46,7 @@ const App = () => {
         }
         ) : null}
       </TagCloud>
+      <Map/>
     </Container>
   );
 }

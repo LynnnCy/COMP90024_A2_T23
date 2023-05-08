@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import 'mapboxgl-legend/dist/style.css';
+
 const data = import('./sudo_vic_lga_attributes.json')
 
 const Map = () => {
@@ -14,16 +16,24 @@ const Map = () => {
             center: [144.9631, -37.8136],
             zoom: 6
         });
+        map.scrollZoom.disable();
 
         map.on('load', () => {
             data.then((data) => {
                 // Calculate class breaks based on the range of density values
-                const featureName = 'tweet_count'
-                const densityValues = data.features.map((feature) => {
-                    return feature.properties[featureName]
+                const featureName = 'tweet_counts'
+                let densityValues = new Set();
+                data.features.forEach((feature) => {
+                    densityValues.add(feature.properties[featureName])
                 });
                 const minDensity = Math.min(...densityValues);
-                const maxDensity = Math.max(...densityValues);
+                let maxDensity = Math.max(...densityValues);
+                //Move very large values to the end of the spectrum
+                while (maxDensity / minDensity >= 500) {
+                    densityValues.delete(maxDensity)
+                    maxDensity = Math.max(...densityValues);
+                }
+
                 const range = maxDensity - minDensity;
                 const classBreaks = [
                     minDensity,
@@ -54,9 +64,9 @@ const Map = () => {
                             ['linear'],
                             ['get', featureName],
                             classBreaks[0],
-                            'green',
-                            classBreaks[1],
                             'lime',
+                            classBreaks[1],
+                            'green',
                             classBreaks[2],
                             'yellow',
                             classBreaks[3],
@@ -95,8 +105,7 @@ const Map = () => {
                             Median Income 2017-18 (AUD): ${feature.properties.median_aud_2017_18} <br>
                             Mean Income 2017-18 (AUD): ${feature.properties.mean_aud_2017_18} <br>
                             Median age of earners 2017-18: ${feature.properties.median_age_of_earners_years_2017_18} <br>
-                            Tweet Count: ${feature.properties.tweet_count} <br>
-
+                            Tweet Count: ${feature.properties.tweet_counts} <br>
                             </strong>`;
 
                         new mapboxgl.Popup()

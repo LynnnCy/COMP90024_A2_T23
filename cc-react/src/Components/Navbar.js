@@ -7,7 +7,7 @@ const NavbarCustom = () => {
     return (
         <Navbar bg="dark" variant="dark">
             <Container>
-                <Link className='navbar-brand' to="/">Team 23</Link>
+                <Link className='navbar-brand' to="/"><img width={"35rem"} alt="logo" src='logo.jpg'/>Team 23</Link>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto" activeKey={window.location.pathname}>

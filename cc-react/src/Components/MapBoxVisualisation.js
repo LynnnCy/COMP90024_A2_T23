@@ -3,9 +3,9 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import 'mapboxgl-legend/dist/style.css';
 
-const data = import('./sudo_vic_lga_attributes.json')
 
-const MapBoxVisualisation = () => {
+
+const MapBoxVisualisation = ({data}) => {
     const mapContainerRef = useRef(null);
     useEffect(() => {
         mapboxgl.accessToken = 'pk.eyJ1IjoiYWhheWF0IiwiYSI6ImNsaGJ1OWdlZjB1bnQza28xMXFyanRsYmoifQ.xCFO6dYDz52Flm3XKx3tUw';

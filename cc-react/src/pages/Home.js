@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Navbar from '../Components/Navbar';
 import WordCloud from '../Components/WordCloud';
 const Home = () => {
     const [tweets, setTweets] = useState([]);

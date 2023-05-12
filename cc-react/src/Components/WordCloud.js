@@ -1,7 +1,7 @@
 import { Container } from 'react-bootstrap';
 import TagCloud from 'react-tag-cloud';
 
-const WordCloud = ({ tweets }) => {
+const WordCloud = ({ tweets, height, title }) => {
     const tagCloudStyles = {
         fontFamily: 'Roboto, sans-serif',
         fontSize: 16,
@@ -14,8 +14,8 @@ const WordCloud = ({ tweets }) => {
 
     return (
         <Container className="my-5">
-            <h1 style={{ textAlign: 'center' }} className="mb-4">What are people talking about?</h1>
-            <TagCloud style={{ width: '100%', height: '50rem' }} className="tag-cloud">
+            <h1 style={{ textAlign: 'center' }} className="mb-4">{title ? title : 'What are people talking about?'}</h1>
+            <TagCloud style={{ width: '100%', height: height ? height : '50rem' }} className="tag-cloud">
                 {tweets !== null ? tweets.map((tweet) => {
                     const name = tweet.value.name;
                     return (<div key={tweet.id} style={tagCloudStyles}>

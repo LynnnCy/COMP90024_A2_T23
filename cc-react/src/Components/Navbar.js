@@ -1,24 +1,21 @@
+import { useState } from 'react';
 import Nav from 'react-bootstrap/Nav';
 
-function Navbar() {
+const Navbar = () => {
+    const [activeKey, setActiveKey] = useState('/')
     return (
         <Nav
-            activeKey="/home"
-            onSelect={(selectedKey) => alert(`selected ${selectedKey}`)}
+            activeKey={activeKey}
+            onSelect={(selectedKey) => setActiveKey(selectedKey)}
         >
             <Nav.Item>
-                <Nav.Link href="/home">Active</Nav.Link>
+                <Nav.Link href="/">Home</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link eventKey="link-1">Link</Nav.Link>
+                <Nav.Link href='/today' eventKey="today">Today</Nav.Link>
             </Nav.Item>
             <Nav.Item>
-                <Nav.Link eventKey="link-2">Link</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-                <Nav.Link eventKey="disabled" disabled>
-                    Disabled
-                </Nav.Link>
+                <Nav.Link href='/map' eventKey="map">Map</Nav.Link>
             </Nav.Item>
         </Nav>
     );

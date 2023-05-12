@@ -20,7 +20,7 @@ const Today = () => {
     }, []);
 
     return (
-        <WordCloud tweets={tweets}></WordCloud>
+        <WordCloud tweets={tweets} height={"20rem"} title={"What are people talking about today?"}></WordCloud>
     )
 };
 

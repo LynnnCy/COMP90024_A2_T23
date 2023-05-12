@@ -1,12 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import 'mapboxgl-legend/dist/style.css';
+import Table from 'react-bootstrap/Table';
+import { Row } from 'react-bootstrap';
 
-
-
-const MapBoxVisualisation = ({data}) => {
+const MapBoxVisualisation = ({ data, currentFeature }) => {
     const mapContainerRef = useRef(null);
+    const [currData, setCurrData] = useState(null)
     useEffect(() => {
         mapboxgl.accessToken = 'pk.eyJ1IjoiYWhheWF0IiwiYSI6ImNsaGJ1OWdlZjB1bnQza28xMXFyanRsYmoifQ.xCFO6dYDz52Flm3XKx3tUw';
         const map = new mapboxgl.Map({
@@ -21,35 +22,10 @@ const MapBoxVisualisation = ({data}) => {
 
         map.on('load', () => {
             data.then((data) => {
+                setCurrData(data)
                 // Calculate class breaks based on the range of density values
-                const featureName = 'tweet_counts'
-                let densityValues = new Set();
-                data.features.forEach((feature) => {
-                    densityValues.add(feature.properties[featureName])
-                });
-                const minDensity = Math.min(...densityValues);
-                let maxDensity = Math.max(...densityValues);
-                //Move very large values to the end of the spectrum
-                while (maxDensity / minDensity >= 500) {
-                    densityValues.delete(maxDensity)
-                    maxDensity = Math.max(...densityValues);
-                }
-
-                const range = maxDensity - minDensity;
-                const classBreaks = [
-                    minDensity,
-                    minDensity + range * 0.1,
-                    minDensity + range * 0.2,
-                    minDensity + range * 0.3,
-                    minDensity + range * 0.4,
-                    minDensity + range * 0.5,
-                    minDensity + range * 0.6,
-                    minDensity + range * 0.7,
-                    minDensity + range * 0.8,
-                    minDensity + range * 0.9,
-                    maxDensity
-                ];
-
+                const featureName = currentFeature
+                const classBreaks = getClassBreaks(data, featureName);
 
                 map.addSource('density-data', {
                     type: 'geojson',
@@ -148,10 +124,39 @@ const MapBoxVisualisation = ({data}) => {
             return () => map.remove();
         })
     });
-
+    let classBreaks = currData !== null ? getClassBreaks(currData, currentFeature) : []
     return (
         <>
             <div ref={mapContainerRef} style={{ width: '100%', height: '100vh' }}></div>
+            <Row style={{marginTop: "2rem"}}>
+                <h3><u>Class Values</u></h3>
+                {currData !== null
+                    ? <Table striped bordered hover>
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                classBreaks.map((classBreak, index) => {
+                                    console.log(index)
+                                    return (
+                                        <>
+                                            <tr>
+                                                <td>{index + 1}</td>
+                                                <td> {index === classBreaks.length - 1 ? `Greater than ${Math.trunc(classBreak)}` : `Values between ${Math.trunc(classBreak)} to ${Math.trunc(classBreaks[index + 1])}`}</td>
+                                            </tr>
+                                        </>
+                                    )
+                                })
+                            }
+                        </tbody>
+                    </Table>
+                    : null}
+
+            </Row>
         </>
     );
 };
@@ -169,6 +174,35 @@ const getAllColors = (classBreaks) => {
         colors[index] = getColor(classBreaks[index], classBreaks[classBreaks.length - 1], classBreaks[0])
     }
     return colors;
+}
+
+const getClassBreaks = (data, featureName) => {
+    let densityValues = new Set();
+    data.features.forEach((feature) => {
+        densityValues.add(feature.properties[featureName])
+    });
+    const minDensity = Math.min(...densityValues);
+    let maxDensity = Math.max(...densityValues);
+    //Move very large values to the end of the spectrum
+    while (maxDensity / minDensity >= 500) {
+        densityValues.delete(maxDensity)
+        maxDensity = Math.max(...densityValues);
+    }
+
+    const range = maxDensity - minDensity;
+    const classBreaks = [
+        minDensity,
+        minDensity + range * 0.111,
+        minDensity + range * 0.222,
+        minDensity + range * 0.333,
+        minDensity + range * 0.444,
+        minDensity + range * 0.555,
+        minDensity + range * 0.666,
+        minDensity + range * 0.777,
+        minDensity + range * 0.888,
+        maxDensity
+    ];
+    return classBreaks;
 }
 
 export default MapBoxVisualisation;

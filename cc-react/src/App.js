@@ -1,21 +1,20 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Home from './pages/Home';
 import Today from './pages/Today'
 import GeoInfoMap from './pages/GeoInfoMap';
-import Layout from "./pages/Layout";
+import { AnimatePresence } from "framer-motion";
 
 const App = () => {
+  const location = useLocation()
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
+    <AnimatePresence>
+      <Routes location={location} key={location.pathname}>
           <Route index element={<Home />} />
           <Route path="today" element={<Today />} />
           <Route path="map" element={<GeoInfoMap />} />
           {/* <Route path="*" element={<NoPage />} /> */}
-        </Route>
       </Routes>
-    </BrowserRouter>
+    </AnimatePresence>
   );
 }
 

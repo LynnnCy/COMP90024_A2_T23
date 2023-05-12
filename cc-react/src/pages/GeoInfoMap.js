@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import MapBoxVisualisation from "../Components/MapBoxVisualisation";
+import PageTransition from '../Components/PageTransition';
+import LoadingSpinner from '../Components/LoadingSpinner';
 
 const GeoInfoMap = () => {
     const [data, setData] = useState(null);
@@ -8,7 +10,9 @@ const GeoInfoMap = () => {
     }, []);
 
 return (
-    data !== null ? <MapBoxVisualisation data={data} /> : null
+    <PageTransition>
+        {data !== null ? <MapBoxVisualisation data={data} /> : <LoadingSpinner />}
+    </PageTransition>
 );
 }
 

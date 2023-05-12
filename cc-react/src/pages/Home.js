@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from '../Components/Navbar';
 import WordCloud from '../Components/WordCloud';
+import PageTransition from '../Components/PageTransition';
 const Home = () => {
     const [tweets, setTweets] = useState([]);
     useEffect(() => {
@@ -21,7 +21,9 @@ const Home = () => {
     }, []);
 
     return (
-        <WordCloud tweets={tweets}></WordCloud>
+        <PageTransition>
+            <WordCloud tweets={tweets}></WordCloud>
+        </PageTransition>
     )
 };
 

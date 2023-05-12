@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import WordCloud from '../Components/WordCloud';
+import PageTransition from '../Components/PageTransition';
+
 const Today = () => {
     const [tweets, setTweets] = useState([]);
     useEffect(() => {
@@ -20,7 +22,9 @@ const Today = () => {
     }, []);
 
     return (
-        <WordCloud tweets={tweets} height={"20rem"} title={"What are people talking about today?"}></WordCloud>
+        <PageTransition>
+            <WordCloud tweets={tweets} height={"20rem"} title={"What are people talking about today?"}></WordCloud>
+        </PageTransition>
     )
 };
 

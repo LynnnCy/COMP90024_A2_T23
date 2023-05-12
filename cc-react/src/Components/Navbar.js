@@ -1,38 +1,23 @@
-import { useState } from 'react';
 import { Container } from 'react-bootstrap'
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { Link } from 'react-router-dom';
 
 const NavbarCustom = () => {
     return (
         <Navbar bg="dark" variant="dark">
             <Container>
-                <Navbar.Brand href="/">Team 23</Navbar.Brand>
+                <Link className='navbar-brand' to="/">Team 23</Link>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto" activeKey={window.location.pathname}>
-                        <Nav.Link  href="/">Home</Nav.Link>
-                        <Nav.Link  href='/today'>Today</Nav.Link>
-                        <Nav.Link href='/map'>Map</Nav.Link>
+                        <Link className='nav-link'  to="/">Home</Link>
+                        <Link className='nav-link'  to='/today'>Today</Link>
+                        <Link className='nav-link' to='/map'>Map</Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
         </Navbar>
-        // <Nav
-        //     activeKey={activeKey}
-        //     
-        // >
-        //     <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
-        //     <Nav.Item>
-        //         <Nav.Link href="/">Home</Nav.Link>
-        //     </Nav.Item>
-        //     <Nav.Item>
-        //         <Nav.Link href='/today' eventKey="today">Today</Nav.Link>
-        //     </Nav.Item>
-        //     <Nav.Item>
-        //         <Nav.Link href='/map' eventKey="map">Map</Nav.Link>
-        //     </Nav.Item>
-        // </Nav>
     );
 }
 

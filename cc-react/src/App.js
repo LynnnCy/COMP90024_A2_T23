@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container } from 'reactstrap';
 import TagCloud from 'react-tag-cloud';
 import randomColor from 'randomcolor';
-import Map from './Map'
+import MapBoxVisualisation from './MapBoxVisualisation'
 
 const App = () => {
   const [tweets, setTweets] = useState([]);
@@ -17,6 +17,7 @@ const App = () => {
         })
         setTweets(Array.from(tweetMap.values()));
       } catch (err) {
+        console.log(err)
       }
     }
     fetchTweets();
@@ -46,7 +47,7 @@ const App = () => {
         }
         ) : null}
       </TagCloud>
-      <Map/>
+      <MapBoxVisualisation/>
     </Container>
   );
 }

@@ -1,13 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import 'mapboxgl-legend/dist/style.css';
 
 const data = import('./sudo_vic_lga_attributes.json')
 
-const Map = () => {
+const MapBoxVisualisation = () => {
     const mapContainerRef = useRef(null);
-    const [hoverInfo, setHoverInfo] = useState(null);
     useEffect(() => {
         mapboxgl.accessToken = 'pk.eyJ1IjoiYWhheWF0IiwiYSI6ImNsaGJ1OWdlZjB1bnQza28xMXFyanRsYmoifQ.xCFO6dYDz52Flm3XKx3tUw';
         const map = new mapboxgl.Map({
@@ -17,6 +16,8 @@ const Map = () => {
             zoom: 6
         });
         map.scrollZoom.disable();
+        const nav = new mapboxgl.NavigationControl();
+        map.addControl(nav, 'top-right');
 
         map.on('load', () => {
             data.then((data) => {
@@ -49,10 +50,13 @@ const Map = () => {
                     maxDensity
                 ];
 
+
                 map.addSource('density-data', {
                     type: 'geojson',
                     data: data
                 });
+
+                const colors = getAllColors(classBreaks)
 
                 map.addLayer({
                     id: 'density-layer',
@@ -64,25 +68,25 @@ const Map = () => {
                             ['linear'],
                             ['get', featureName],
                             classBreaks[0],
-                            'lime',
+                            colors[0],
                             classBreaks[1],
-                            'green',
+                            colors[1],
                             classBreaks[2],
-                            'yellow',
+                            colors[2],
                             classBreaks[3],
-                            'orange',
+                            colors[3],
                             classBreaks[4],
-                            'red',
+                            colors[4],
                             classBreaks[5],
-                            'pink',
+                            colors[5],
                             classBreaks[6],
-                            'purple',
+                            colors[6],
                             classBreaks[7],
-                            'skyblue',
+                            colors[7],
                             classBreaks[8],
-                            'blue',
+                            colors[8],
                             classBreaks[9],
-                            'navy',
+                            colors[9],
                         ],
                         'fill-opacity': 0.7
                     },
@@ -91,12 +95,7 @@ const Map = () => {
 
                 map.on('click', 'density-layer', (e) => {
                     if (e.features.length > 0) {
-                        if (hoverInfo) {
-                            setHoverInfo(null);
-                        }
                         const feature = e.features[0];
-                        console.log(feature.properties[featureName])
-                        setHoverInfo(feature.properties[featureName]);
                         const coordinates = e.lngLat;
                         const description =
                             `<strong>Place name: ${feature.properties.lga_name} <br>
@@ -114,11 +113,41 @@ const Map = () => {
                             .addTo(map);
                     }
                 });
+                const legend = document.createElement('div');
+                legend.className = 'mapboxgl-ctrl';
+                legend.style.maxWidth = '46rem';
+                legend.innerHTML = `
+                    <div style="background-color: white; padding: 1rem">
+                        <div style="background-color: ${colors[0]}; width: 20px; height: 20px; display: inline-block;"></div>
+                        <span>Class 1</span>
+                        <div style="background-color: ${colors[1]}; width: 20px; height: 20px; display: inline-block;"></div>
+                        <span>Class 2</span>
+                        <div style="background-color: ${colors[2]}; width: 20px; height: 20px; display: inline-block;"></div>
+                        <span>Class 3</span>
+                        <div style="background-color: ${colors[3]}; width: 20px; height: 20px; display: inline-block;"></div>
+                        <span>Class 4</span>
+                        <div style="background-color: ${colors[4]}; width: 20px; height: 20px; display: inline-block;"></div>
+                        <span>Class 5</span>
+                        <div style="background-color: ${colors[5]}; width: 20px; height: 20px; display: inline-block;"></div>
+                        <span>Class 6</span>
+                        <div style="background-color: ${colors[6]}; width: 20px; height: 20px; display: inline-block;"></div>
+                        <span>Class 7</span>
+                        <div style="background-color: ${colors[7]}; width: 20px; height: 20px; display: inline-block;"></div>
+                        <span>Class 8</span>
+                        <div style="background-color: ${colors[8]}; width: 20px; height: 20px; display: inline-block;"></div>
+                        <span>Class 9</span>
+                        <div style="background-color: ${colors[9]}; width: 20px; height: 20px; display: inline-block;"></div>
+                        <span>Class 10</span>
+                    </div>
+                    `;
+                if (document.getElementsByClassName("mapboxgl-ctrl-top-left")[0].childNodes.length === 0) {
+                    document.getElementsByClassName("mapboxgl-ctrl-top-left")[0].appendChild(legend)
+                }
             });
 
             return () => map.remove();
         })
-    }, []);
+    });
 
     return (
         <>
@@ -127,4 +156,19 @@ const Map = () => {
     );
 };
 
-export default Map;
+const getColor = (value, max, min) => {
+    //value from 0 to 1
+    let colorValue = (value - min) / (max - min)
+    let hue = ((1 - colorValue) * 120).toString(10);
+    return ["hsl(", hue, ",100%,50%)"].join("");
+}
+
+const getAllColors = (classBreaks) => {
+    let colors = []
+    for (let index = 0; index < classBreaks.length; index++) {
+        colors[index] = getColor(classBreaks[index], classBreaks[classBreaks.length - 1], classBreaks[0])
+    }
+    return colors;
+}
+
+export default MapBoxVisualisation;

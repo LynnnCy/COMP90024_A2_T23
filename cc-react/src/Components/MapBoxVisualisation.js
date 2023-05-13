@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import 'mapboxgl-legend/dist/style.css';
@@ -7,7 +7,6 @@ import { Row } from 'react-bootstrap';
 
 const MapBoxVisualisation = ({ data, currentFeature }) => {
     const mapContainerRef = useRef(null);
-    const [currData, setCurrData] = useState(null)
     useEffect(() => {
         mapboxgl.accessToken = 'pk.eyJ1IjoiYWhheWF0IiwiYSI6ImNsaGJ1OWdlZjB1bnQza28xMXFyanRsYmoifQ.xCFO6dYDz52Flm3XKx3tUw';
         const map = new mapboxgl.Map({
@@ -21,8 +20,6 @@ const MapBoxVisualisation = ({ data, currentFeature }) => {
         map.addControl(nav, 'top-right');
 
         map.on('load', () => {
-            data.then((data) => {
-                setCurrData(data)
                 // Calculate class breaks based on the range of density values
                 const featureName = currentFeature
                 const classBreaks = getClassBreaks(data, featureName);
@@ -123,14 +120,13 @@ const MapBoxVisualisation = ({ data, currentFeature }) => {
 
             return () => map.remove();
         })
-    });
-    let classBreaks = currData !== null ? getClassBreaks(currData, currentFeature) : []
+    let classBreaks = data !== null ? getClassBreaks(data, currentFeature) : []
     return (
         <>
             <div ref={mapContainerRef} style={{ width: '100%', height: '100vh' }}></div>
             <Row style={{marginTop: "2rem"}}>
                 <h3><u>Class Values</u></h3>
-                {currData !== null
+                {data !== null
                     ? <Table striped bordered hover>
                         <thead>
                             <tr>
@@ -141,7 +137,6 @@ const MapBoxVisualisation = ({ data, currentFeature }) => {
                         <tbody>
                             {
                                 classBreaks.map((classBreak, index) => {
-                                    console.log(index)
                                     return (
                                         <>
                                             <tr>

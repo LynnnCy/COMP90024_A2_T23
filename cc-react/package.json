@@ -7,7 +7,9 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.2.3",
+    "cors": "^2.8.5",
     "d3-cloud": "^1.2.5",
+    "express": "^4.18.2",
     "framer-motion": "^10.12.10",
     "mapbox-gl": "^2.14.1",
     "mapboxgl-legend": "^1.10.2",
@@ -35,16 +37,8 @@
       "react-app/jest"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "browserslist": [
+    "defaults",
+    "not ie 11"
+  ]
 }

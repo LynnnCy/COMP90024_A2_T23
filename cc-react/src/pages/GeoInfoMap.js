@@ -10,16 +10,22 @@ const GeoInfoMap = () => {
     const [currentFeature, setCurrentFeature] = useState('tweet_counts');
     const [propertyKeys, setPropertyKeys] = useState([]);
     useEffect(() => {
-        if (data === null) {
-            import('../sudo_vic_lga_attributes.json').then(data => {
-                setData(data)
-                let tempKeys = [];
-                for (let key in data.features[0].properties) {
-                    tempKeys.push(key)
+        fetch('http://172.26.130.99:8080/getGeoData').then(respData => {
+            respData.json().then(respJson => {
+                if(data === null) {
+                    setData({
+                        "type": "FeatureCollection",
+                        "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::4283" } },
+                        "features": respJson
+                    })
+                    let tempKeys = [];
+                    for (let key in respJson[0].properties) {
+                        tempKeys.push(key)
+                    }
+                    setPropertyKeys(tempKeys)
                 }
-                setPropertyKeys(tempKeys);
             })
-        }
+        })
     }, [data, setPropertyKeys]);
 
     return (

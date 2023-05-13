@@ -7,7 +7,7 @@ const Today = () => {
     useEffect(() => {
         async function fetchTweets() {
             try {
-                const response = await fetch('http://localhost:3000/trendingTopics');
+                const response = await fetch('http://172.26.130.99:3000/trendingTopics');
                 const data = await response.json()
                 const tweetMap = new Map()
                 data.forEach(tweet => {

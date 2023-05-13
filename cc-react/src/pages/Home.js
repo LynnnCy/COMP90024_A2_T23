@@ -6,7 +6,7 @@ const Home = () => {
     useEffect(() => {
         async function fetchTweets() {
             try {
-                const response = await fetch('http://localhost:3000/recentTopics');
+                const response = await fetch('http://172.26.130.99:3000/recentTopics');
                 const data = await response.json()
                 const tweetMap = new Map()
                 data.forEach(tweet => {

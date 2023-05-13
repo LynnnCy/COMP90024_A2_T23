@@ -1,10 +1,10 @@
-from flask import Flask, render_template, request,jsonify
+from flask import Flask, render_template, request, jsonify
 from flask_restful import Api, Resource
 import couchdb
 import json
+from flask_cors import CORS
 
-
-# authentication
+# authentication for db
 admin = 'admin'
 password = 'admin'
 url = f'http://{admin}:{password}@172.26.130.99:5984/'
@@ -22,10 +22,12 @@ else:
     db = couch[db_name]
 
 app = Flask(__name__)
+CORS(app)
 api = Api(app)
 
-@app.route('/api_1', methods=['GET', 'POST', 'DELETE'])
-def api_1():
+
+@app.route('/getGeoData', methods=['GET', 'POST', 'DELETE'])
+def get_geo_data():
     if request.method == 'GET':
         rows = db.view('_all_docs', include_docs=True)
         full_result = []
@@ -34,11 +36,12 @@ def api_1():
             pop_item = ['_id', '_rev']
             for i in pop_item:
                 result.pop(i, None)
-            full_result.append([result])
+            full_result.append(result)
 
         jsonStr = json.dumps(full_result)
     # return jsonify(full_result)
     return jsonStr
 
+
 if __name__ == '__main__':
-    app.run(debug=True, host='127.0.0.1', port='8080')
+    app.run(debug=True, host='172.26.130.99', port='8080')

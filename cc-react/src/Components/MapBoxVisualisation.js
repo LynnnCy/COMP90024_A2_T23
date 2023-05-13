@@ -182,7 +182,7 @@ const getClassBreaks = (data, featureName) => {
     // console.log("densityValues", densityValues)
     // console.log("minDensity", minDensity)
     // console.log("maxDensity", maxDensity)
-    if (maxDensity > 1000) {
+    if (maxDensity > 1000 && minDensity > 0) {
         //Move very large values to the end of the spectrum
         while (maxDensity / minDensity >= 500) {
             densityValues.delete(maxDensity)

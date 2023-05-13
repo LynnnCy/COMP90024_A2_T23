@@ -3,7 +3,7 @@ import MapBoxVisualisation from "../Components/MapBoxVisualisation";
 import PageTransition from '../Components/PageTransition';
 import LoadingSpinner from '../Components/LoadingSpinner';
 import Dropdown from 'react-bootstrap/Dropdown';
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Form } from "react-bootstrap";
 
 const GeoInfoMap = () => {
     const [data, setData] = useState(null);
@@ -21,7 +21,9 @@ const GeoInfoMap = () => {
                     })
                     let tempKeys = [];
                     for (let key in respJson[0].properties) {
-                        tempKeys.push(key)
+                        if (key !== 'lga_code' && key !== 'lga_name') {
+                            tempKeys.push(key)
+                        }
                     }
                     setPropertyKeys(tempKeys)
                 }
@@ -34,6 +36,7 @@ const GeoInfoMap = () => {
             {data !== null
                 ? <Container>
                     <Row>
+                        <Form.Label>{processPropertyKey(currentFeature)}</Form.Label>
                         <Dropdown>
                             <Dropdown.Toggle variant="success" id="dropdown-basic">
                                 Feature
@@ -41,7 +44,7 @@ const GeoInfoMap = () => {
                             <Dropdown.Menu>
                                 {propertyKeys.length > 0
                                     ? propertyKeys.map(key => {
-                                        return <Dropdown.Item onClick={() => handleDropdownClick(key, setCurrentFeature)}>{key}</Dropdown.Item>
+                                        return <Dropdown.Item onClick={() => handleDropdownClick(key, setCurrentFeature)}>{processPropertyKey(key)}</Dropdown.Item>
                                     })
                                     : null
                                 }
@@ -71,6 +74,13 @@ const processData = (data) => {
         }
         data[index] = feature
     })
+}
+
+const processPropertyKey = (key) => {
+    //Replace underscores with space and capitalize first letter
+    key = key.replaceAll("_", " ");
+    const firstLetterCap = key.charAt(0).toUpperCase()
+    return firstLetterCap + key.slice(1);
 }
 
 export default GeoInfoMap;

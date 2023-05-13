@@ -12,7 +12,8 @@ const GeoInfoMap = () => {
     useEffect(() => {
         fetch('http://172.26.130.99:8080/getGeoData').then(respData => {
             respData.json().then(respJson => {
-                if(data === null) {
+                processData(respJson)
+                if (data === null) {
                     setData({
                         "type": "FeatureCollection",
                         "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::4283" } },
@@ -59,6 +60,17 @@ const GeoInfoMap = () => {
 
 const handleDropdownClick = (value, callback) => {
     callback(value);
+}
+
+const processData = (data) => {
+    data.forEach((feature, index) => {
+        for (let key in feature.properties) {
+            if (key !== 'lga_code' && key !== 'lga_name') {
+                feature.properties[key] = parseInt(feature.properties[key])
+            }
+        }
+        data[index] = feature
+    })
 }
 
 export default GeoInfoMap;

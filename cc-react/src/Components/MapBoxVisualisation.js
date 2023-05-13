@@ -176,12 +176,18 @@ const getClassBreaks = (data, featureName) => {
     data.features.forEach((feature) => {
         densityValues.add(feature.properties[featureName])
     });
+    densityValues.delete(NaN)
     const minDensity = Math.min(...densityValues);
     let maxDensity = Math.max(...densityValues);
-    //Move very large values to the end of the spectrum
-    while (maxDensity / minDensity >= 500) {
-        densityValues.delete(maxDensity)
-        maxDensity = Math.max(...densityValues);
+    // console.log("densityValues", densityValues)
+    // console.log("minDensity", minDensity)
+    // console.log("maxDensity", maxDensity)
+    if (maxDensity > 1000) {
+        //Move very large values to the end of the spectrum
+        while (maxDensity / minDensity >= 500) {
+            densityValues.delete(maxDensity)
+            maxDensity = Math.max(...densityValues);
+        }
     }
 
     const range = maxDensity - minDensity;

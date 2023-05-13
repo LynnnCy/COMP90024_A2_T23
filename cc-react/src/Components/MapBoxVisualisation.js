@@ -5,7 +5,7 @@ import 'mapboxgl-legend/dist/style.css';
 import Table from 'react-bootstrap/Table';
 import { Row } from 'react-bootstrap';
 
-const MapBoxVisualisation = ({ data, currentFeature }) => {
+const MapBoxVisualisation = ({ data, currentFeature, currentDataLabel: currentFeatureLabel }) => {
     const mapContainerRef = useRef(null);
     useEffect(() => {
         mapboxgl.accessToken = 'pk.eyJ1IjoiYWhheWF0IiwiYSI6ImNsaGJ1OWdlZjB1bnQza28xMXFyanRsYmoifQ.xCFO6dYDz52Flm3XKx3tUw';
@@ -78,6 +78,7 @@ const MapBoxVisualisation = ({ data, currentFeature }) => {
                             Mean Income 2017-18 (AUD): ${feature.properties.mean_aud_2017_18} <br>
                             Median age of earners 2017-18: ${feature.properties.median_age_of_earners_years_2017_18} <br>
                             Tweet Count: ${feature.properties.tweet_counts} <br>
+                            ${currentFeatureLabel}: ${feature.properties[currentFeature]} <br>
                             </strong>`;
 
                         new mapboxgl.Popup()

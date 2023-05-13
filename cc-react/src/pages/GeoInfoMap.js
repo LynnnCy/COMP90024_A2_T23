@@ -9,6 +9,7 @@ const GeoInfoMap = () => {
     const [data, setData] = useState(null);
     const [currentFeature, setCurrentFeature] = useState('tweet_counts');
     const [propertyKeys, setPropertyKeys] = useState([]);
+    const [currentFeatureLabel , setCurrentFeatureLabel] = useState(processPropertyKey(currentFeature));
     useEffect(() => {
         fetch('http://172.26.130.99:8080/getGeoData').then(respData => {
             respData.json().then(respJson => {
@@ -44,7 +45,7 @@ const GeoInfoMap = () => {
                             <Dropdown.Menu>
                                 {propertyKeys.length > 0
                                     ? propertyKeys.map(key => {
-                                        return <Dropdown.Item onClick={() => handleDropdownClick(key, setCurrentFeature)}>{processPropertyKey(key)}</Dropdown.Item>
+                                        return <Dropdown.Item onClick={() => handleDropdownClick(key, setCurrentFeature, setCurrentFeatureLabel)}>{processPropertyKey(key)}</Dropdown.Item>
                                     })
                                     : null
                                 }
@@ -52,7 +53,7 @@ const GeoInfoMap = () => {
                         </Dropdown>
                     </Row>
                     <Row style={{ margin: "2rem" }}>
-                        <MapBoxVisualisation currentFeature={currentFeature} data={data} />
+                        <MapBoxVisualisation currentFeature={currentFeature} data={data} currentDataLabel={currentFeatureLabel}/>
                     </Row>
                 </Container>
                 : <LoadingSpinner />}
@@ -61,8 +62,9 @@ const GeoInfoMap = () => {
     );
 }
 
-const handleDropdownClick = (value, callback) => {
-    callback(value);
+const handleDropdownClick = (value, setCurrentFeature, setCurrentFeatureLabel) => {
+    setCurrentFeature(value);
+    setCurrentFeatureLabel(processPropertyKey(value))
 }
 
 const processData = (data) => {

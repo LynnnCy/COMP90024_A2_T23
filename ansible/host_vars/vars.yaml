@@ -1,0 +1,56 @@
+toolkits:
+  - name: python3-dev
+  - name: python3-setuptools
+  - name: python3-pip
+  - name: nodejs
+  - name: npm
+  - name: erlang
+
+updates:
+  - name: pip
+  - name: openstacksdk
+  - name: setuptools
+
+packages:
+  - name: geopandas
+  - name: pandas
+  - name: couchdb
+  - name: geojson
+  - name: numpy
+  - name: shapely
+  - name: wikipedia
+  - name: flask
+  - name: flask-restful
+  - name: flasgger
+  - name: scipy
+  - name: mastodon.py
+  - name: requests
+  - name: transformers
+  - name: torch
+
+npmtools:
+  - name: serve
+  - name: forever
+  - name: express
+  - name: nano
+  - name: node-cron
+  - name: twit
+
+snaptools:
+  - name: couchdb
+  - name: jq
+
+uuid: 7c71ec1aacc68b37b6e13a0e4c012a7c
+secret: 7c71ec1aacc68b37b6e13a0e4c01339e
+
+node_urls:
+  - name: "172.26.135.193"
+  - name: "172.26.133.22"
+
+shards: 6
+copies: 2
+
+databases:
+  - name: tweets
+  - name: mastodon
+  - name: sudo

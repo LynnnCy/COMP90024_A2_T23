@@ -1,0 +1,17 @@
+- hosts: test
+  vars_files:
+    - host_vars/vars.yaml
+  gather_facts: true
+
+  roles:
+    - role: setup-install
+    - role: setup-couchdb
+
+- hosts: test_01
+  vars_files:
+    - host_vars/vars.yaml
+  gather_facts: true
+
+  roles:
+    - role: setup-cluster
+    - role: setup-database

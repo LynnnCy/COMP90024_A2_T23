@@ -1,0 +1,35 @@
+- name: Install APT tool-kits
+  become: true
+  ansible.builtin.apt:
+    name: "{{ item.name }}"
+    state: latest
+    update_cache: true
+  loop: "{{ toolkits }}"
+  when: ansible_distribution == "Ubuntu"
+
+- name: Update pip
+  become: true
+  ansible.builtin.pip:
+    name: "{{ item.name }}"
+    state: latest
+  loop: "{{ updates }}"
+
+- name: Install npm tool-kits
+  become: true
+  ansible.builtin.command: npm install -g "{{ item.name }}"
+  loop: "{{ npmtools }}"
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install python packages
+  become: true
+  ansible.builtin.pip:
+    name: "{{ item.name }}"
+    state: latest
+    extra_args: --ignore-installed
+  loop: "{{ packages }}"
+
+- name: Install snap tool-kits
+  become: true
+  ansible.builtin.command: snap install "{{ item.name }}"
+  loop: "{{ snaptools }}"
+  when: ansible_distribution == "Ubuntu"

@@ -1,0 +1,13 @@
+- name: copy the harvest to remote host
+  ansible.builtin.copy:
+    src: ~/Server_Magt/COMP90024_A2_T23/harvest/Mastodon.py
+    dest: /home/ubuntu/Mastodon.py
+
+- name: run harvest
+  become: true
+  become_user: ubuntu
+  ansible.builtin.shell: screen -d -m python3 Mastodon.py --ms_url "{{ item.url }}" --ms_token "{{ item.token }}" --db_name "mastodon"
+  loop: "{{ mastodon }}"
+  when: "item.node == ansible_ssh_host"
+  async: 45
+  poll: 0

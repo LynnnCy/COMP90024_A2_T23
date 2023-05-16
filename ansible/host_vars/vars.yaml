@@ -27,6 +27,7 @@ packages:
   - name: requests
   - name: transformers
   - name: torch
+  - name: argparse
 
 npmtools:
   - name: serve
@@ -44,8 +45,8 @@ uuid: 7c71ec1aacc68b37b6e13a0e4c012a7c
 secret: 7c71ec1aacc68b37b6e13a0e4c01339e
 
 node_urls:
-  - name: "172.26.135.193"
-  - name: "172.26.133.22"
+  - name: 172.26.135.193
+  - name: 172.26.133.22
 
 shards: 6
 copies: 2
@@ -54,3 +55,14 @@ databases:
   - name: tweets
   - name: mastodon
   - name: sudo
+
+mastodon:
+  - url: https://tictoc.social
+    token: "RL0Lo2zmb6ehX3phnC4L_OjoKBfh91dOuCmZdfqROoQ"
+    node: 172.26.135.193
+  - url: https://theblower.au
+    token: "rWC3p-QnnPTFyvlNEl92T1dXepFUj0KEWnxey8eKYeY"
+    node: 172.26.133.22
+  - url: https://mastodon.au
+    token: "1-mB5cxh0ONIW95VuDjbcjBAkbL_XY3Vy9vhLZaG4Ag"
+    node: 172.26.133.22

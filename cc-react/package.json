@@ -22,6 +22,7 @@
     "react-scripts": "5.0.1",
     "react-tag-cloud": "^1.2.7",
     "reactstrap": "^9.1.9",
+    "recharts": "^2.6.2",
     "shuffle": "^0.2.5",
     "web-vitals": "^2.1.4"
   },

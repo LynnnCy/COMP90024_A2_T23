@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request,jsonify
 from flask_restful import Api, Resource
 import couchdb
 import json
@@ -47,18 +47,18 @@ def tweet_stats():
 def mastodon_stats():
     try:
         if request.method == 'GET':
-        db_name = 'mastodon_try'
-        db = couch[db_name]
-        math_view_name = 'positive_content_count/pos_number'
-        math_view = db.view(math_view_name, group_level=1)
-        tweet_count_view_name = '_all_docs'
-        tweet_count_view = db.view(tweet_count_view_name)
-        tweet_count = len(tweet_count_view)
-        for row in math_view:
-            if row.key == 'tweets_count':
-                result = {'total_tweet_count': tweet_count, 'positive_tweet_count': row.value,
-                          'positive_tweet_percentage': round(row.value / tweet_count * 100, 1)}
-                return jsonify(result)
+            db_name = 'mastodon_try'
+            db = couch[db_name]
+            math_view_name = 'positive_content_count/pos_number'
+            math_view = db.view(math_view_name, group_level=1)
+            tweet_count_view_name = '_all_docs'
+            tweet_count_view = db.view(tweet_count_view_name)
+            tweet_count = len(tweet_count_view)
+            for row in math_view:
+                if row.key == 'tweets_count':
+                    result = {'total_tweet_count': tweet_count, 'positive_tweet_count': row.value,
+                              'positive_tweet_percentage': round(row.value / tweet_count * 100, 1)}
+                    return jsonify(result)
     except:
         str= 'no implementation'
         return str

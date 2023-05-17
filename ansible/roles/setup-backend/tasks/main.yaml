@@ -1,0 +1,11 @@
+- name: copy the back-end to remote host
+  ansible.builtin.copy:
+    src: ~/Server_Magt/COMP90024_A2_T23/data_processing/call_data.py
+    dest: /home/ubuntu/back_end.py
+
+- name: run back-end
+  become: true
+  become_user: ubuntu
+  ansible.builtin.shell: screen -d -m python3 back_end.py
+  async: 45
+  poll: 0

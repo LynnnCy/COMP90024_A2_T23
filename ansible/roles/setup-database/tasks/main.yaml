@@ -1,0 +1,4 @@
+- name: create databases
+  become: true
+  ansible.builtin.command: curl -X PUT "http://admin:admin@0.0.0.0:5984/{{item.name}}"
+  loop: "{{ databases }}"

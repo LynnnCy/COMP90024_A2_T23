@@ -1,0 +1,65 @@
+- name: change permission config
+  become: true
+  ansible.builtin.command: chmod 600 vm.args
+  args:
+    chdir: /var/snap/couchdb/current/etc
+
+- name: config couchdb name
+  become: true
+  ansible.builtin.command: sed -i "s/127.0.0.1/{{ ansible_ssh_host }}/g" vm.args
+  args:
+    chdir: /var/snap/couchdb/current/etc
+
+- name: search if the port range exists
+  become: true
+  ansible.builtin.lineinfile:
+    path: /var/snap/couchdb/current/etc/vm.args
+    line: "-kernel inet_dist_listen_min 9100\n-kernel inet_dist_listen_max 9200"
+    state: present
+  check_mode: true
+  register: presence
+
+- name: config couchdb communication port
+  become: true
+  ansible.builtin.command: sed -i "46a\-kernel inet_dist_listen_min 9100\n-kernel inet_dist_listen_max 9200" vm.args
+  args:
+    chdir: /var/snap/couchdb/current/etc
+  when: presence is not changed
+
+- name: config admin and password
+  become: true
+  ansible.builtin.command: snap set couchdb admin=admin
+
+- name: config port number
+  become: true
+  ansible.builtin.command: snap set couchdb port=5984
+
+- name: start couchdb
+  become: true
+  ansible.builtin.command: snap start couchdb
+
+- name: wait for couchdb server
+  pause:
+    seconds: 5
+
+- name: config bind address
+  become: true
+  ansible.builtin.command: curl -X PUT http://admin:admin@127.0.0.1:5984/_node/_local/_config/chttpd/bind_address -d '"0.0.0.0"'
+
+- name: set uuids
+  become: true
+  ansible.builtin.command: curl -X PUT http://admin:admin@localhost:5984/_node/_local/_config/couchdb/uuid -d '"{{ uuid }}"'
+
+- name: set secret
+  become: true
+  ansible.builtin.command: curl -X PUT http://admin:admin@localhost:5984/_node/_local/_config/chttpd_auth/secret -d '"{{ secret }}"'
+
+- name: change defult d and q
+  become: true
+  ansible.builtin.shell: |
+    curl -X PUT http://admin:admin@0.0.0.0:5984/_node/_local/_config/q -d '"{{ shards }}"'
+    curl -X PUT http://admin:admin@0.0.0.0:5984/_node/_local/_config/n -d '"{{ copies }}"'
+
+- name: restart couchdb
+  become: true
+  ansible.builtin.command: snap restart couchdb

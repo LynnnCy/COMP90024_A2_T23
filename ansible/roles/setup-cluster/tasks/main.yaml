@@ -1,0 +1,19 @@
+- name: enable cluster mode
+  become: true
+  ansible.builtin.command: curl -X PUT -H "Content-Type:application/json" http://admin:admin@0.0.0.0:5984/_cluster_setup -d '{"action":"enable_cluster", "bind_address":"0.0.0.0", "username":"admin", "password":"admin", "node_count":"{{ node_urls|length }}"}'
+
+- name: connect to remote nodes
+  become: true
+  ansible.builtin.shell: |
+    curl -X POST -H "Content-Type:application/json" http://admin:admin@0.0.0.0:5984/_cluster_setup -d '{"action":"enable_cluster", "bind_address":"0.0.0.0", "username":"admin", "password":"admin", "port":"5984", "node_count":"{{ node_urls|length }}", "remote_node":"{{ item.name }}", "remote_current_user":"admin", "remote_current_password":"admin"}'
+    curl -X POST -H "Content-Type:application/json" http://admin:admin@0.0.0.0:5984/_cluster_setup -d '{"action":"add_node", "host":"{{ item.name }}", "port":5984, "username":"admin", "password":"admin"}'
+  loop: "{{ node_urls }}"
+  when: "item.name != ansible_ssh_host"
+
+- name: collect cookie
+  become: true
+  ansible.builtin.command: curl -X POST -H 'Content-Type:application/json' http://admin:admin@0.0.0.0:5984/_session -d '{"name":"admin", "password":"admin"}' -c cookie.txt
+
+- name: finish cluster setup
+  become: true
+  ansible.builtin.command: curl -b cookie.txt -X POST -H "Content-Type:application/json" http://0.0.0.0:5984/_cluster_setup -d '{"action":"finish_cluster"}'

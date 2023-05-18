@@ -17,7 +17,7 @@ const WordCloud = ({ title, words }) => {
         enableTooltip: true,
         deterministic: false,
         fontFamily: "impact",
-        fontSizes: words.length > 50 ? [30, 100] : [10, 70],
+        fontSizes: words.length > 50 ? [30, 100] : [40, 100],
         fontStyle: "normal",
         fontWeight: "normal",
         padding: "100rem",

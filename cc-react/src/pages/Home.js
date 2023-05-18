@@ -16,7 +16,9 @@ const Home = () => {
                     if (tweetWordMap.has(currentKey)) {
                         tweetWordMap.set(currentKey, tweetWordMap.get(currentKey) + 1)
                     } else {
-                        tweetWordMap.set(currentKey, 1)
+                        if (tweet.value.tweet_volume) {
+                            tweetWordMap.set(currentKey, tweet.value.tweet_volume)
+                        }
                     }
                 })
                 setWordCloudValueList(getWordCloudValueList(tweetWordMap))

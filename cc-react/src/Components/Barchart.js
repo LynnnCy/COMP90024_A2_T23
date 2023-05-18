@@ -10,6 +10,7 @@ const ChartComponent = () => {
             respData.json().then(respJson => {
                 setFetchedData(respJson);
                 if (fetchedData === null) {
+                    setFetchedData(respJson);
                     let data = []
                     respJson.series.forEach(curr => {
                         data.push({ "name": curr.name, "amusement": curr.data[0], "awe": curr.data[1], "joy": curr.data[2] })

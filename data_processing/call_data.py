@@ -100,8 +100,11 @@ def scatter_plot(param):
     # indicate the db name
     db_name = 'sudo_data_emotion'
     db = couch[db_name]
-    attributes_dict={'median age':'median age','pupulation_density':'population density (persons/km2)',
-        'median income':'median_aud_2017_18','Mortgage stress %':'Mortgage stress %','unemployment rate':"unemployment rate (sep 21)",'education_level':"full time participation in Secondary School Education at age 16",'total medical practitioners %':"total medical practitioners % per 100,000",
+    attributes_dict={'median age':'median age','pupulation density':'population density (persons/km2)',
+        'median income':'median_aud_2017_18','mortgage stress %':'Mortgage stress %',
+        'unemployment rate':"unemployment rate (sep 21)",
+        'education level':"full time participation in Secondary School Education at age 16",
+        'total medical practitioners % per 100,000':"total medical practitioners % per 100,000",
         'crime offences count':'total_crime_offences_count'}
     try:
         if request.method == 'GET':
@@ -110,11 +113,11 @@ def scatter_plot(param):
             full_result = []
             for row in rows:
                 attributes=attributes_dict[param]
-                att_result = float(row['doc']['properties'][attributes])
                 try:
-                    pos_tweet_per = round(float(row['doc']['properties']['tweet_counts']['pos_cnt'])/float(row['doc']['properties']['tweet_counts']['total_cnt'])*100,1)
-                    print('pos',float(row['doc']['properties']['tweet_counts']['pos_cnt']))
-                    print('total', float(row['doc']['properties']['tweet_counts']['total_cnt']))
+                    att_result = round(float(row['doc']['properties'][attributes]), 1)
+                    pos_tweet_per = round(
+                        float(row['doc']['properties']['pos_cnt']) / float(row['doc']['properties']['total_cnt']) * 100,
+                        1)
                 except:
                     continue
                 one_plot=[att_result,pos_tweet_per]

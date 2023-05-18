@@ -180,7 +180,9 @@ value_list=list(tweet_total_count_dict[0].values())
 for i in range(len(d1)):
     sumup=sum(d1.values())
     coef=list(d1.values())[i]
-    d2={'total_cnt':0,'pos_cnt':0,'neg_cnt':0, 'neu_cnt':0,'awe_positive':0,'wna_amusement':0,'wna_sadness':0, 'wna_negative_fear':0,'wna_anger':0,'wna_annoyance':0,'wna_indifference':0}
+    d2={'total_cnt':0,'pos_cnt':0,'neg_cnt':0, 'neu_cnt':0,
+        'awe_positive':0,'wna_amusement':0,'wna_sadness':0, 'wna_negative_fear':0,
+        'wna_anger':0,'wna_annoyance':0,'wna_indifference':0}
     for j in range(len(value_list)):
         nan_value=value_list[j]
         fill_value=int(nan_value/sumup * coef)
@@ -200,9 +202,9 @@ url = f'http://{admin}:{password}@172.26.130.99:5984/'
 couch = couchdb.Server(url)
 
 from datetime import date
-today = date.today()
-print("Today's date:", today)
-db_name = 'sudo_data_emotion'+ str(today)
+# today = date.today()
+# print("Today's date:", today)
+db_name = 'sudo_data_emotion'
 # load the data into database
 if db_name not in couch:
     db = couch.create(db_name)
@@ -215,9 +217,14 @@ with open('sudo_vic_lga_attributes.geojson', 'r') as sudo_file:
         lga_name = gj['features'][i]['properties']['lga_name']
         try:
             item=tweet_total_count_dict[lga_name]
-            gj['features'][i]['properties']['tweet_counts']=item
+            gj['features'][i]['properties'].update(item)
         except:
-            gj['features'][i]['properties']['tweet_counts']=0
+            fill_dict={'total_cnt':0,'pos_cnt':0,'neg_cnt':0, 'neu_cnt':0,
+        'awe_positive':0,'wna_amusement':0,'wna_sadness':0, 'wna_negative_fear':0,
+        'wna_anger':0,'wna_annoyance':0,'wna_indifference':0}
+            gj['features'][i]['properties'].update(fill_dict)
+            count+=1
+        print(count)
         entry = json.dumps(gj['features'][i])
         result = json.loads(entry)
         db.save(result)

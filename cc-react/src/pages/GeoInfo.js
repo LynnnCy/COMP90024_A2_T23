@@ -10,11 +10,11 @@ import { processPropertyKey } from '../StringUtil'
 const GeoInfo = () => {
     //Map Related State
     const [mapData, setMapData] = useState(null);
-    const [currentMapFeature, setCurrentMapFeature] = useState('tweet_counts');
+    const [currentMapFeature, setCurrentMapFeature] = useState('total_cnt');
     const [mapPropertyKeys, setMapPropertyKeys] = useState([]);
     const [currentMapFeatureLabel, setCurrentMapFeatureLabel] = useState(processPropertyKey(currentMapFeature));
     //Scatter Related State
-    const scatterFeatures = ["median income", "median age", "Mortgage stress %",
+    const scatterFeatures = ["median_income", "median age", "Mortgage stress %",
         "medical resource", "unemployment rate", "education_level",
         "total medical practitioners %", "crime offences count"]
     const [currentScatterFeature, setCurrentScatterFeature] = useState("median income")

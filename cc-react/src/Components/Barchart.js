@@ -29,9 +29,9 @@ const ChartComponent = () => {
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="amusement" fill="#8884d8" />
-                <Bar dataKey="awe" fill="#82ca9d" />
-                <Bar dataKey="joy" fill="#82ca9d7" />
+                <Bar dataKey="amusement" fill="#FF6F61" />
+                <Bar dataKey="awe" fill="#70C1B3" />
+                <Bar dataKey="joy" fill="#Feb236" />
             </BarChart>
             : null
     );

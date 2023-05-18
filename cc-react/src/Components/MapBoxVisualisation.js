@@ -126,13 +126,13 @@ const MapBoxVisualisation = ({ data, currentFeature, currentDataLabel: currentFe
         <>
             <div ref={mapContainerRef} style={{ width: '100%', height: '100vh' }}></div>
             <Row style={{marginTop: "2rem"}}>
-                <h3><u>Class Values</u></h3>
+                <h3><u>Map Class Values</u></h3>
                 {data !== null
                     ? <Table striped bordered hover>
                         <thead>
                             <tr>
                                 <th>Class</th>
-                                <th>Value</th>
+                                <th>Value(s)</th>
                             </tr>
                         </thead>
                         <tbody>

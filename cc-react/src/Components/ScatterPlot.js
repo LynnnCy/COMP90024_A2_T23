@@ -8,44 +8,65 @@ import {
 } from 'chart.js';
 import { Scatter } from 'react-chartjs-2';
 import { useEffect, useState } from 'react';
+import LoadingSpinner from './LoadingSpinner';
+import { processPropertyKey } from '../StringUtil'
 
 const ScatterPlot = ({ attributeName }) => {
-    console.log("attributeName", attributeName)
     const [dataForScatter, setDataForScatter] = useState(null);
+    const [loading, setLoading] = useState(true)
+    const FONT_LABEL_SIZE = 20
     useEffect(() => {
+        setLoading(true)
         fetch(`http://172.26.130.99:8080/scatter_plot/${attributeName}`).then(resp => resp.json()).then(respJson => {
-            // console.log(respJson)
+            setLoading(false)
             let processedData = []
-            // if (dataForScatter === null) {
-                respJson[attributeName].forEach(point => {
-                    processedData.push({ x: point[0], y: point[1] })
-                })
-                setDataForScatter({
-                    datasets: [
-                        {
-                            label: attributeName,
-                            data: processedData,
-                            backgroundColor: 'rgba(255, 99, 132, 1)',
-                        },
-                    ],
-                });
-            // }
+            respJson[attributeName].forEach(point => {
+                processedData.push({ x: point[0], y: point[1] })
+            })
+            setDataForScatter({
+                datasets: [
+                    {
+                        label: processPropertyKey(attributeName),
+                        data: processedData,
+                        backgroundColor: 'rgba(255, 99, 132, 1)',
+                    },
+
+                ],
+            });
+        }).catch(err => {
+            alert(err)
+            setLoading(false)
         })
-    }, [attributeName, dataForScatter])
-    let scatter = dataForScatter === null ? null : <>
-        <Scatter options={options} data={dataForScatter} />
-    </>
-    return scatter;
+    }, [attributeName])
+    let options = {
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Positive Tweet Percentage',
+                    font: {
+                        size: FONT_LABEL_SIZE,
+                    },
+                }
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: processPropertyKey(attributeName),
+                    font: {
+                        size: FONT_LABEL_SIZE,
+                    },
+                }
+            }
+        },
+    };
+    return loading
+        ? <LoadingSpinner />
+        :
+        <Scatter display options={options} data={dataForScatter} />
 }
 
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);
-
-export const options = {
-    scales: {
-        y: {
-            beginAtZero: true,
-        },
-    },
-};
 
 export default ScatterPlot;

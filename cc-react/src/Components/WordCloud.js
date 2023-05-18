@@ -1,31 +1,54 @@
-import { Container } from 'react-bootstrap';
-import TagCloud from 'react-tag-cloud';
+import ReactWordcloud from "react-wordcloud";
+import { Resizable } from "re-resizable";
 
-const WordCloud = ({ tweets, height, title }) => {
-    const tagCloudStyles = {
-        fontFamily: 'Roboto, sans-serif',
-        fontSize: 16,
-        fontWeight: 'bold',
-        padding: 5,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+import "tippy.js/dist/tippy.css";
+import "tippy.js/animations/scale.css";
+
+const resizeStyle = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    border: "solid 1px #ddd",
+};
+
+const WordCloud = ({ title, words }) => {
+    const options = {
+        colors: ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b"],
+        enableTooltip: true,
+        deterministic: false,
+        fontFamily: "impact",
+        fontSizes: words.length > 50 ? [30, 100] : [10, 70],
+        fontStyle: "normal",
+        fontWeight: "normal",
+        padding: "100rem",
+        rotations: 3,
+        rotationAngles: [0, 90],
+        scale: "sqrt",
+        spiral: "archimedean",
+        transitionDuration: 1000
     };
-
+    const callbacks = {
+        onWordClick: (word) => {
+            console.log(word)
+            window.open(`https://twitter.com/search?q=${word.text}`)
+        }
+    }
     return (
-        <Container className="my-5">
-            <h1 style={{ textAlign: 'center' }} className="mb-4">{title ? title : 'What are people talking about?'}</h1>
-            <TagCloud style={{ width: '100%', height: height ? height : '50rem' }} className="tag-cloud">
-                {tweets !== null ? tweets.map((tweet) => {
-                    const name = tweet.value.name;
-                    return (<div key={tweet.id} style={tagCloudStyles}>
-                        <span>{name}</span>
-                    </div>)
-                }
-                ) : null}
-            </TagCloud>
-        </Container>
-    )
+        <div>
+            <h1 className="text-center">{title}</h1>
+            <Resizable
+                defaultSize={{
+                    width: "auto",
+                    height: "100vh"
+                }}
+                style={resizeStyle}
+            >
+                <div style={{ width: "100%", height: "100%" }}>
+                    <ReactWordcloud words={words} options={options} callbacks={callbacks}/>
+                </div>
+            </Resizable>
+        </div>
+    );
 }
 
 export default WordCloud;

@@ -1,18 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import WordCloud from '../Components/WordCloud';
 import PageTransition from '../Components/PageTransition';
+import WordCloud from '../Components/WordCloud';
+import LoadingSpinner from '../Components/LoadingSpinner';
+import { getWordCloudValueList } from '../StringUtil'
 const Home = () => {
-    const [tweets, setTweets] = useState([]);
+    const [wordCloudValueList, setWordCloudValueList] = useState([])
     useEffect(() => {
         async function fetchTweets() {
             try {
                 const response = await fetch('http://172.26.130.99:3000/recentTopics');
                 const data = await response.json()
-                const tweetMap = new Map()
+                const tweetWordMap = new Map()
                 data.forEach(tweet => {
-                    tweetMap.set(tweet.value.name.trim(), tweet)
+                    let currentKey = tweet.value.name.trim()
+                    if (tweetWordMap.has(currentKey)) {
+                        tweetWordMap.set(currentKey, tweetWordMap.get(currentKey) + 1)
+                    } else {
+                        tweetWordMap.set(currentKey, 1)
+                    }
                 })
-                setTweets(Array.from(tweetMap.values()));
+                setWordCloudValueList(getWordCloudValueList(tweetWordMap))
             } catch (err) {
                 console.log(err)
             }
@@ -22,7 +29,13 @@ const Home = () => {
 
     return (
         <PageTransition>
-            <WordCloud tweets={tweets}></WordCloud>
+            {
+                wordCloudValueList.length > 0
+                    ?
+                    <WordCloud words={wordCloudValueList} title={"What are people talking about lately?"} />
+                    :
+                    <LoadingSpinner />
+            }
         </PageTransition>
     )
 };

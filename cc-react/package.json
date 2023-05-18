@@ -15,6 +15,7 @@
     "mapbox-gl": "^2.14.1",
     "mapboxgl-legend": "^1.10.2",
     "randomcolor": "^0.6.2",
+    "re-resizable": "^6.9.9",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
     "react-chartjs-2": "^5.2.0",
@@ -23,9 +24,11 @@
     "react-router-dom": "^6.11.1",
     "react-scripts": "5.0.1",
     "react-tag-cloud": "^1.2.7",
+    "react-wordcloud": "^1.2.7",
     "reactstrap": "^9.1.9",
     "recharts": "^2.6.2",
     "shuffle": "^0.2.5",
+    "tippy.js": "^6.3.7",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

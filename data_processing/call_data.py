@@ -222,30 +222,37 @@ def chart_data_mastodon():
 ##### 5 ##### word cloud
 @app.route('/word_cloud/<param>', methods=['GET', 'POST', 'DELETE'])
 def word_cloud(param):
-    # indicate the db name
-    db_name = 'twitter_topic_wordcloud'
+    # param= T_ or M_ + topic name=['news & social concern','diaries & daily life','sports', 'film tv & video & music', 'celebrity & pop culture']
+    db_name = 'topic_wordcloud'
     db = couch[db_name]
     current_date = datetime.date.today()
-    l1=[current_date.year,current_date.month,current_date.day]
+    date_list=[current_date.year,current_date.month,current_date.day]
     try:
         if request.method == 'GET':
-            rows = db.view('latest_result/latest_result', include_docs=True)
+            # test which data source
+            if param[0]=='T':
+                rows = db.view('latest_result_t2/twitter_result', include_docs=True)
+            elif param[0] == 'M':
+                rows = db.view('latest_result_t2/mastodon_result', include_docs=True)
+                # print('nothing')
             flag=0
             for row in rows:
+                print('access')
+                print(date_list,row['key']==date_list)
                 try:
                     # check if it's the latest record
-                    if row['key']==l1:
-                        wordcount_list=row['doc'][param]
-                       # print('1st',row['key'])
+                    if row['key']==date_list:
+                        wordcount_list=row['doc'][param[2:]]
+                        print('1st',row['key'])
                         jsonStr = json.dumps(wordcount_list)
                     else:
                         flag+=1
                 except:
-                    # try three times, three latest records in the view;
-                    # if latest one is not available, try the next available one
+                        # try three times, three latest records in the view;
+                        # if latest one is not available, try the next available one
                         if flag >=3:
-                            wordcount_list = row['doc'][param]
-                          #  print('2nd', row['key'])
+                            wordcount_list=row['doc'][param[2:]]
+                            print('2nd', row['key'])
                             jsonStr = json.dumps(wordcount_list)
                             break
                         else:
@@ -254,6 +261,7 @@ def word_cloud(param):
     except:
         str= 'no implementation'
         return str
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='172.26.130.99', port='8080')

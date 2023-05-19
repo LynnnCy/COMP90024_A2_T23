@@ -100,7 +100,7 @@ def scatter_plot(param):
     # indicate the db name
     db_name = 'sudo_data_emotion'
     db = couch[db_name]
-    attributes_dict={'median age':'median age','pupulation density':'population density (persons/km2)',
+    attributes_dict={'median age':'median age','population density':'population density (persons/km2)',
         'median income':'median_aud_2017_18','mortgage stress %':'Mortgage stress %',
         'unemployment rate':"unemployment rate (sep 21)",
         'education level':"full time participation in Secondary School Education at age 16",

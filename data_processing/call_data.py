@@ -3,6 +3,7 @@ from flask_restful import Api, Resource
 import couchdb
 import json
 from flask_cors import CORS
+import datetime
 
 # authentication for db
 admin = 'admin'
@@ -203,7 +204,6 @@ def chart_data_mastodon():
         except Exception as e:
             pass
 
-
     # create the chart options
     options = {
         'xAxis': [{
@@ -220,10 +220,40 @@ def chart_data_mastodon():
     return jsonStr
 
 ##### 5 ##### word cloud
-# word cloud for positive tweet and mastodon
-# if not explicit, narrow down into the top 3 topic
-
-
+@app.route('/word_cloud/<param>', methods=['GET', 'POST', 'DELETE'])
+def word_cloud(param):
+    # indicate the db name
+    db_name = 'twitter_topic_wordcloud'
+    db = couch[db_name]
+    current_date = datetime.date.today()
+    l1=[current_date.year,current_date.month,current_date.day]
+    try:
+        if request.method == 'GET':
+            rows = db.view('latest_result/latest_result', include_docs=True)
+            flag=0
+            for row in rows:
+                try:
+                    # check if it's the latest record
+                    if row['key']==l1:
+                        wordcount_list=row['doc'][param]
+                       # print('1st',row['key'])
+                        jsonStr = json.dumps(wordcount_list)
+                    else:
+                        flag+=1
+                except:
+                    # try three times, three latest records in the view;
+                    # if latest one is not available, try the next available one
+                        if flag >=3:
+                            wordcount_list = row['doc'][param]
+                          #  print('2nd', row['key'])
+                            jsonStr = json.dumps(wordcount_list)
+                            break
+                        else:
+                            continue
+            return jsonStr
+    except:
+        str= 'no implementation'
+        return str
 
 if __name__ == '__main__':
     app.run(debug=True, host='172.26.130.99', port='8080')

@@ -14,9 +14,9 @@ const GeoInfo = () => {
     const [mapPropertyKeys, setMapPropertyKeys] = useState([]);
     const [currentMapFeatureLabel, setCurrentMapFeatureLabel] = useState(processPropertyKey(currentMapFeature));
     //Scatter Related State
-    const scatterFeatures = ["median_income", "median age", "Mortgage stress %",
-        "medical resource", "unemployment rate", "education_level",
-        "total medical practitioners %", "crime offences count"]
+    const scatterFeatures = ["median income", "median age", "mortgage stress %",
+        "medical resource", "unemployment rate", "education level",
+        "total medical practitioners % per 100,000", "crime offences count", "population density"]
     const [currentScatterFeature, setCurrentScatterFeature] = useState("median income")
     useEffect(() => {
         fetch('http://172.26.130.99:8080/getGeoData').then(respData => {

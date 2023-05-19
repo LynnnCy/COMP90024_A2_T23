@@ -178,7 +178,46 @@ def bar_chart_tweet():
         str= 'no implementation'
         return str
 
+ # bar chart for mastodon
+@app.route('/chart_data_mastodon', methods=['GET', 'POST', 'DELETE'])
+def chart_data_mastodon():
+    # indicate the db name
+    db_name = 'mastodon_data_emotion'
+    db = couch[db_name]
+    class_ = {}
+    if request.method == 'GET':
+        # retrieve the view data
+        rows = db.view('emotion/emotion_class_view', group=True)
+        categories = [row.key.split(':')[1] for row in rows]
+        # create the x-axis categories
+        EMOTION = ['news_&_social_concern', 'diaries_&_daily_life', 'film_tv_&_video', 'celebrity_&_pop_culture', 'food_&_dining', 'arts_&_culture']
+        series = []
+        try:
+            for emotion in EMOTION:
+                data = [row.value[emotion] for row in rows]
+                series.append({
+                'name': emotion,
+                'type': 'bar',
+                'data': data
+            })
+        except Exception as e:
+            pass
 
+
+    # create the chart options
+    options = {
+        'xAxis': [{
+            'type': 'category',
+            'data': categories
+        }],
+        'yAxis': [{
+            'type': 'value'
+        }],
+        'series': series
+    }
+
+    jsonStr = json.dumps(options)
+    return jsonStr
 
 ##### 5 ##### word cloud
 # word cloud for positive tweet and mastodon

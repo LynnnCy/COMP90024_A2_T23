@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend, Tooltip } from 'recharts';
+import { processPropertyKey } from '../StringUtil'
 
 
 const ChartComponent = () => {
@@ -13,7 +14,7 @@ const ChartComponent = () => {
                     setFetchedData(respJson);
                     let data = []
                     respJson.series.forEach(curr => {
-                        data.push({ "name": curr.name, "amusement": curr.data[0], "awe": curr.data[1], "joy": curr.data[2] })
+                        data.push({ "name": processPropertyKey(curr.name), "amusement": curr.data[0], "awe": curr.data[1], "joy": curr.data[2] })
                     })
                     setBarChartData(data)
                 }

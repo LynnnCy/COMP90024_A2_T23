@@ -1,11 +1,14 @@
 export const processPropertyKey = (key) => {
     //Replace underscores with space and capitalize first letter
     key = key.replaceAll("_", " ");
-    const firstLetterCap = key.charAt(0).toUpperCase()
-    if(key.includes("cnt")) {
+    let updatedKey = ''
+    key.split(" ").forEach(word => {
+        updatedKey += " " + word.charAt(0).toUpperCase() + word.slice(1)
+    })
+    if (key.includes("cnt")) {
         key = key.replace("cnt", "tweet count")
     }
-    return firstLetterCap + key.slice(1);
+    return updatedKey;
 }
 
 export const getWordCloudValueList = (wordCountMap) => {

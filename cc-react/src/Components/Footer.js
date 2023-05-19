@@ -8,6 +8,7 @@ const Footer = () => {
                 <li className="nav-item"><Link className='nav-link' to='/today'>Today</Link></li>
                 <li className="nav-item"><Link className='nav-link' to='/map'>SUDO Data</Link></li>
                 <li className="nav-item"><Link className='nav-link' to='/visuals'>Visualisations</Link></li>
+                <li className="nav-item"><Link className='nav-link' to='/stream'>Stream Data</Link></li>
             </ul>
             <p className="text-center text-muted">© 2023 Team 23</p>
         </footer>

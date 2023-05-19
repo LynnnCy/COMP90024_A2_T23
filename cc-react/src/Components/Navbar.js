@@ -15,6 +15,7 @@ const NavbarCustom = () => {
                         <Link className='nav-link'  to='/today'>Today</Link>
                         <Link className='nav-link' to='/map'>SUDO Data</Link>
                         <Link className='nav-link' to='/visuals'>Visualisations</Link>
+                        <Link className='nav-link' to='/stream'>Stream Data</Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

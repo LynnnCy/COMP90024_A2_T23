@@ -11,6 +11,7 @@ server_02 ansible_ssh_host=172.26.128.217 ansible_ssh_port=22 ansible_ssh_user=u
 server_03 ansible_ssh_host=172.26.130.239 ansible_ssh_port=22 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/Server_Magt/test_key.pem
 
 [test]
+
 test_01 ansible_ssh_host=172.26.135.193 ansible_ssh_port=22 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/Server_Magt/test_key.pem
 
 test_02 ansible_ssh_host=172.26.133.22 ansible_ssh_port=22 ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/Server_Magt/test_key.pem

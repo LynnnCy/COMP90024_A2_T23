@@ -147,7 +147,7 @@ def bar_chart_tweet():
             rows = db.view('count_class/emtion_classification', group=True)
             categories = [row.key.split(':')[1] for row in rows]
             # create the x-axis categories
-            EMOTION = ['arts_&_culture', 'business_&_entrepreneurs', 'celebrity_&_pop_culture', 'diaries_&_daily_life', 'family', 'fashion_&_style', 'film_tv_&_video', 'fitness_&_health', 'food_&_dining', 'gaming', 'learning_&_educational', 'music', 'news_&_social_concern', 'other_hobbies', 'relationships', 'science_&_technology', 'sports', 'travel_&_adventure', 'youth_&_student_life']
+            EMOTION = ['news_&_social_concern', 'diaries_&_daily_life', 'film_tv_&_video', 'celebrity_&_pop_culture', 'food_&_dining', 'arts_&_culture']
             series = []
             try:
                 for emotion in EMOTION:

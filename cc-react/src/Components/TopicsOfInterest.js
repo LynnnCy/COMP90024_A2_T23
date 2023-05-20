@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import PageTransition from '../Components/PageTransition';
 import WordCloud from '../Components/WordCloud';
 import LoadingSpinner from '../Components/LoadingSpinner';
-import { Container, Row, Form } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import Dropdown from 'react-bootstrap/Dropdown';
-import { getWordCloudValueList } from '../StringUtil'
 import { processPropertyKey } from '../StringUtil'
 const TopicsOfInterest = () => {
     const [wordCloudValueList, setWordCloudValueList] = useState([])
     const [currentTopic, setCurrentTopic] = useState('news & social concern')
     const allTopics = ['news & social concern', 'diaries & daily life', 'sports', 'film tv & video & music', 'celebrity & pop culture']
     useEffect(() => {
-        console.log("RENDERING")
         async function fetchTopics() {
             console.log(`http://172.26.130.99:3000/word_cloud/T_${currentTopic}`)
             try {
@@ -32,7 +29,7 @@ const TopicsOfInterest = () => {
     }, [currentTopic]);
 
     return (
-        <PageTransition>
+        <>
             <Container>
                 <br />
                 <Row>
@@ -54,12 +51,12 @@ const TopicsOfInterest = () => {
             {
                 wordCloudValueList.length > 0
                     ?
-                    <WordCloud words={wordCloudValueList} title={processPropertyKey(currentTopic)} fontSizes={[25, 120]}/>
+                    <WordCloud words={wordCloudValueList} title={processPropertyKey(currentTopic)} fontSizes={[25, 120]} />
                     :
                     <LoadingSpinner />
             }
-
-        </PageTransition>
+            <br />
+        </>
     )
 };
 

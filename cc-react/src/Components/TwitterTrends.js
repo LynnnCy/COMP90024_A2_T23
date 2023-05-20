@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
-// import WordCloud from '../Components/WordCloud';
-import WordCloud from '../Components/WordCloud';
 import PageTransition from '../Components/PageTransition';
-import { getWordCloudValueList } from '../StringUtil'
+import WordCloud from '../Components/WordCloud';
 import LoadingSpinner from '../Components/LoadingSpinner';
-
-const Today = () => {
+import { getWordCloudValueList } from '../StringUtil'
+const TwitterTrends = () => {
     const [wordCloudValueList, setWordCloudValueList] = useState([])
     useEffect(() => {
         async function fetchTweets() {
             try {
-                const response = await fetch('http://172.26.130.99:3000/trendingTopics');
+                const response = await fetch('http://172.26.130.99:3000/recentTopics');
                 const data = await response.json()
                 const tweetWordMap = new Map()
                 data.forEach(tweet => {
@@ -33,11 +31,10 @@ const Today = () => {
 
     return (
         <PageTransition>
-            {/* <StaticWordCloud tweets={tweets} height={"20rem"} title={"What are people talking about today?"}></StaticWordCloud> */}
             {
                 wordCloudValueList.length > 0
                     ?
-                    <WordCloud words={wordCloudValueList} title={"What are people talking about today?"}/>
+                    <WordCloud words={wordCloudValueList} title={"What are people talking about lately?"} />
                     :
                     <LoadingSpinner />
             }
@@ -45,4 +42,4 @@ const Today = () => {
     )
 };
 
-export default Today;
+export default TwitterTrends;

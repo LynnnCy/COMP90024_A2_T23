@@ -23,18 +23,24 @@ const ChartComponent = () => {
     })
 
     return (
-        barChartData !== null
-            ? <BarChart width={1080} height={650} data={barChartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="amusement" fill="#FF6F61" />
-                <Bar dataKey="awe" fill="#70C1B3" />
-                <Bar dataKey="joy" fill="#Feb236" />
-            </BarChart>
-            : null
+        <div>
+            <h1 className="text-center">{"Emotion Data"}</h1>
+            {
+                barChartData !== null
+                    ? <BarChart width={1080} height={650} data={barChartData}>
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                        <Tooltip />
+                        <Legend />
+                        <Bar dataKey="amusement" fill="#FF6F61" />
+                        <Bar dataKey="awe" fill="#70C1B3" />
+                        <Bar dataKey="joy" fill="#Feb236" />
+                    </BarChart>
+                    : null
+            }
+        </div>
+        
     );
 };
 

@@ -12,8 +12,8 @@ const MapBoxVisualisation = ({ data, currentFeature, currentDataLabel: currentFe
         const map = new mapboxgl.Map({
             container: mapContainerRef.current,
             style: 'mapbox://styles/mapbox/streets-v11',
-            center: [144.9631, -37.8136],
-            zoom: 6
+            center: [144.9631, -36.8136],
+            zoom: 5.5
         });
         map.scrollZoom.disable();
         const nav = new mapboxgl.NavigationControl();
@@ -61,7 +61,8 @@ const MapBoxVisualisation = ({ data, currentFeature, currentDataLabel: currentFe
                             classBreaks[9],
                             colors[9],
                         ],
-                        'fill-opacity': 0.7
+                        'fill-opacity': 0.7,
+                        'fill-outline-color': 'black'
                     },
                     filter: ['==', '$type', 'Polygon']
                 });
@@ -72,12 +73,14 @@ const MapBoxVisualisation = ({ data, currentFeature, currentDataLabel: currentFe
                         const coordinates = e.lngLat;
                         const description =
                             `<strong>Place name: ${feature.properties.lga_name} <br>
-                            Affected family members rate per 100k 2017-18: ${feature.properties["affected_family_members_rate_per_100k_2017_18"]} <br>
-                            Total Crime Offences Count: ${feature.properties.total_crime_offences_count} <br>
-                            Median Income 2017-18 (AUD): ${feature.properties.median_aud_2017_18} <br>
-                            Mean Income 2017-18 (AUD): ${feature.properties.mean_aud_2017_18} <br>
-                            Median age of earners 2017-18: ${feature.properties.median_age_of_earners_years_2017_18} <br>
-                            Tweet Count: ${feature.properties.tweet_counts} <br>
+                            Population Density (person/km2): ${feature.properties["population density (persons/km2)"]} <br>
+                            Median Age: ${feature.properties["median age"]} <br>
+                            Annual Median Income (AUD): ${feature.properties['median_aud_2017_18']} <br>
+                            Unemployment Rate (sep 21): ${feature.properties['unemployment rate (sep 21)']} <br>
+                            Mortgage Stress %: ${feature.properties['Mortgage stress %']} <br>
+                            Full time participation in Secondary School Education at age 16: ${feature.properties['full time participation in Secondary School Education at age 16']} <br>
+                            Total Crime Offences Count: ${feature.properties['total_crime_offences_count']} <br>
+                            Total Medical Practitioners % Per 100,000: ${feature.properties['total medical practitioners % per 100,000']} <br>
                             ${currentFeatureLabel}: ${feature.properties[currentFeature]} <br>
                             </strong>`;
 
@@ -91,7 +94,7 @@ const MapBoxVisualisation = ({ data, currentFeature, currentDataLabel: currentFe
                 legend.className = 'mapboxgl-ctrl';
                 legend.style.maxWidth = '46rem';
                 legend.innerHTML = `
-                    <div style="background-color: white; padding: 1rem">
+                    <div style="background-color:rgba(255, 255, 255, 0.8);; padding: 1rem">
                         <div style="background-color: ${colors[0]}; width: 20px; height: 20px; display: inline-block;"></div>
                         <span>Class 1</span>
                         <div style="background-color: ${colors[1]}; width: 20px; height: 20px; display: inline-block;"></div>
@@ -124,7 +127,7 @@ const MapBoxVisualisation = ({ data, currentFeature, currentDataLabel: currentFe
     let classBreaks = data !== null ? getClassBreaks(data, currentFeature) : []
     return (
         <>
-            <div ref={mapContainerRef} style={{ width: '100%', height: '100vh' }}></div>
+            <div ref={mapContainerRef} style={{ width: '100%', height: '50vh' }}></div>
             <Row style={{marginTop: "2rem"}}>
                 <h3><u>Map Class Values</u></h3>
                 {data !== null
@@ -174,7 +177,12 @@ const getAllColors = (classBreaks) => {
 
 const getClassBreaks = (data, featureName) => {
     let densityValues = new Set();
-    data.features.forEach((feature) => {
+    data.features.forEach((feature, index) => {
+        if (feature.properties[featureName] === undefined) {
+            console.log(data.features[index].properties[featureName])
+            data.features[index].properties[featureName] = 0
+            console.log(data.features[index].properties[featureName])
+        }
         densityValues.add(feature.properties[featureName])
     });
     densityValues.delete(NaN)

@@ -6,7 +6,10 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { processPropertyKey } from '../StringUtil'
 const TopicsOfInterest = () => {
     const [wordCloudValueList, setWordCloudValueList] = useState(null)
+    const [twitterWordCloudValueList, setTwitterWordCloudValueList] = useState(null)
+    const [mastadonWordCloudValueList, setMastadonWordCloudValueList] = useState(null)
     const [currentTopic, setCurrentTopic] = useState('news & social concern')
+    const [currentDataSource, setCurrentDataSource] = useState('Twitter')
     const allTopics = ['news & social concern', 'diaries & daily life', 'sports', 'film tv & video & music', 'celebrity & pop culture']
     useEffect(() => {
         async function fetchTopics() {
@@ -14,13 +17,15 @@ const TopicsOfInterest = () => {
             try {
                 const twitterResp = await fetch(`http://172.26.130.99:8080/word_cloud/T_${currentTopic}`);
                 const twitterData = await twitterResp.json();
+                setTwitterWordCloudValueList(twitterData)
 
                 const mastadonResp = await fetch(`http://172.26.130.99:8080/word_cloud/M_${currentTopic}`);
-
                 const mastadonData = await mastadonResp.json();
-                let allData = twitterData.concat(mastadonData)
+                setMastadonWordCloudValueList(mastadonData)
 
-                setWordCloudValueList(allData)
+                // let allData = twitterData.concat(mastadonData) 
+
+                setWordCloudValueList(twitterData)
             } catch (err) {
                 console.log(err)
             }
@@ -39,6 +44,18 @@ const TopicsOfInterest = () => {
                                 <Row>
                                     <Dropdown>
                                         <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                            Change Data Source
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu>
+                                            <Dropdown.Item onClick={() => { setWordCloudValueList(twitterWordCloudValueList); setCurrentDataSource('Twitter') }}>Twitter</Dropdown.Item>
+                                            <Dropdown.Item onClick={() => { setWordCloudValueList(mastadonWordCloudValueList); setCurrentDataSource('Mastadon') }}>Mastadon</Dropdown.Item>
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </Row>
+                                <br />
+                                <Row>
+                                    <Dropdown>
+                                        <Dropdown.Toggle variant="success" id="dropdown-basic">
                                             Change Topic
                                         </Dropdown.Toggle>
                                         <Dropdown.Menu>
@@ -52,7 +69,7 @@ const TopicsOfInterest = () => {
                                     </Dropdown>
                                 </Row>
                             </Container>
-                            <WordCloud words={wordCloudValueList} title={processPropertyKey(currentTopic)} fontSizes={[25, 120]} /></>
+                            <WordCloud words={wordCloudValueList} title={currentDataSource + ": " + processPropertyKey(currentTopic)} fontSizes={[25, 120]} /></>
                         : <h1 className='text-center'>No Words Available</h1>
 
                     :

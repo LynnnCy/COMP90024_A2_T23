@@ -44,7 +44,7 @@ const StreamData = () => {
                     <FormGroup>
                         <br />
                         <label for="username">Enter Twitter username here:</label>
-                        <Input id='username' placeholder="Enter User Name" /> <br />
+                        <Input id='username' placeholder="e.g. enter @elonmusk and hit submit" /> <br />
                         <Button type='submit'>Submit</Button>{" "}
                         <Button type='submit' onClick={updateData}>Refresh Data</Button>
                     </FormGroup>

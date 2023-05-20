@@ -30,28 +30,29 @@ const TopicsOfInterest = () => {
 
     return (
         <>
-            <Container>
-                <br />
-                <Row>
-                    <Dropdown>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
-                            Change Topic
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            {allTopics.length > 0
-                                ? allTopics.map(topic => {
-                                    return <Dropdown.Item onClick={() => setCurrentTopic(topic)}>{processPropertyKey(topic)}</Dropdown.Item>
-                                })
-                                : null
-                            }
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </Row>
-            </Container>
             {
                 wordCloudValueList.length > 0
                     ?
-                    <WordCloud words={wordCloudValueList} title={processPropertyKey(currentTopic)} fontSizes={[25, 120]} />
+                    <>
+                        <Container>
+                            <br />
+                            <Row>
+                                <Dropdown>
+                                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                        Change Topic
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                        {allTopics.length > 0
+                                            ? allTopics.map(topic => {
+                                                return <Dropdown.Item onClick={() => setCurrentTopic(topic)}>{processPropertyKey(topic)}</Dropdown.Item>
+                                            })
+                                            : null
+                                        }
+                                    </Dropdown.Menu>
+                                </Dropdown>
+                            </Row>
+                        </Container>
+                        <WordCloud words={wordCloudValueList} title={processPropertyKey(currentTopic)} fontSizes={[25, 120]} /></>
                     :
                     <LoadingSpinner />
             }

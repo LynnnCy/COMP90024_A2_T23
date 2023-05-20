@@ -19,3 +19,12 @@ code {
 li {
   list-style: none;
 }
+
+.home {
+  background-image: url("melb.jpg");
+  height: 100vh;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}

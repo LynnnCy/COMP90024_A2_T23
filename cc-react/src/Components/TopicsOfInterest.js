@@ -5,7 +5,7 @@ import { Container, Row } from "react-bootstrap";
 import Dropdown from 'react-bootstrap/Dropdown';
 import { processPropertyKey } from '../StringUtil'
 const TopicsOfInterest = () => {
-    const [wordCloudValueList, setWordCloudValueList] = useState([])
+    const [wordCloudValueList, setWordCloudValueList] = useState(null)
     const [currentTopic, setCurrentTopic] = useState('news & social concern')
     const allTopics = ['news & social concern', 'diaries & daily life', 'sports', 'film tv & video & music', 'celebrity & pop culture']
     useEffect(() => {
@@ -31,28 +31,30 @@ const TopicsOfInterest = () => {
     return (
         <>
             {
-                wordCloudValueList.length > 0
-                    ?
-                    <>
-                        <Container>
-                            <br />
-                            <Row>
-                                <Dropdown>
-                                    <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                        Change Topic
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu>
-                                        {allTopics.length > 0
-                                            ? allTopics.map(topic => {
-                                                return <Dropdown.Item onClick={() => setCurrentTopic(topic)}>{processPropertyKey(topic)}</Dropdown.Item>
-                                            })
-                                            : null
-                                        }
-                                    </Dropdown.Menu>
-                                </Dropdown>
-                            </Row>
-                        </Container>
-                        <WordCloud words={wordCloudValueList} title={processPropertyKey(currentTopic)} fontSizes={[25, 120]} /></>
+                wordCloudValueList !== null
+                    ? wordCloudValueList.length > 0
+                        ? <>
+                            <Container>
+                                <br />
+                                <Row>
+                                    <Dropdown>
+                                        <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                            Change Topic
+                                        </Dropdown.Toggle>
+                                        <Dropdown.Menu>
+                                            {allTopics.length > 0
+                                                ? allTopics.map(topic => {
+                                                    return <Dropdown.Item onClick={() => setCurrentTopic(topic)}>{processPropertyKey(topic)}</Dropdown.Item>
+                                                })
+                                                : null
+                                            }
+                                        </Dropdown.Menu>
+                                    </Dropdown>
+                                </Row>
+                            </Container>
+                            <WordCloud words={wordCloudValueList} title={processPropertyKey(currentTopic)} fontSizes={[25, 120]} /></>
+                        : <h1 className='text-center'>No Words Available</h1>
+
                     :
                     <LoadingSpinner />
             }

@@ -13,6 +13,7 @@ const NavbarCustom = () => {
                     <Nav className="me-auto" activeKey={window.location.pathname}>
                         <Link className='nav-link'  to="/">Home</Link>
                         <Link className='nav-link'  to='/today'>Today</Link>
+                        <Link className='nav-link' to='/topics'>Topics of Interest</Link>
                         <Link className='nav-link' to='/map'>SUDO Data</Link>
                         <Link className='nav-link' to='/visuals'>Visualisations</Link>
                         <Link className='nav-link' to='/stream'>Stream Data</Link>

@@ -11,13 +11,13 @@ const resizeStyle = {
     border: "solid 1px #ddd",
 };
 
-const WordCloud = ({ title, words }) => {
+const WordCloud = ({ title, words, fontSizes }) => {
     const options = {
         colors: ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b"],
         enableTooltip: true,
         deterministic: false,
         fontFamily: "impact",
-        fontSizes: words.length > 50 ? [30, 100] : [40, 100],
+        fontSizes: fontSizes ? fontSizes : words.length > 50 ? [30, 100] : [40, 100],
         fontStyle: "normal",
         fontWeight: "normal",
         padding: "100rem",

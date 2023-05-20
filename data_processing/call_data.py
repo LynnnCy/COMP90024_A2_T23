@@ -227,41 +227,61 @@ def word_cloud(param):
     db = couch[db_name]
     current_date = datetime.date.today()
     date_list=[current_date.year,current_date.month,current_date.day]
+    jsonStr = json.dumps([])
     try:
         if request.method == 'GET':
             # test which data source
             if param[0]=='T':
-                rows = db.view('latest_result_t2/twitter_result', include_docs=True)
+                rows = db.view('latest_result_t2/twitter_result',
+                               keys=[date_list], include_docs=True)                 
+                if(len(rows) == 0):
+                    jsonStr = get_wordlist_count_until_found(
+                        db, 'latest_result_t2/twitter_result', date_list, param)  
+                else:
+                    for row in rows:        
+                        jsonStr = json.dumps(row['doc'][param[2::]])
+                        break
             elif param[0] == 'M':
                 rows = db.view('latest_result_t2/mastodon_result', include_docs=True)
+                if (len(rows) == 0):
+                    jsonStr = get_wordlist_count_until_found(
+                        db, 'latest_result_t2/mastodon_result', date_list, param)
+                else:
+                    for row in rows:
+                        jsonStr = json.dumps(row['doc'][param[2::]])
+                        break        
                 # print('nothing')
-            flag=0
-            for row in rows:
-                print('access')
-                print(date_list,row['key']==date_list)
-                try:
-                    # check if it's the latest record
-                    if row['key']==date_list:
-                        wordcount_list=row['doc'][param[2:]]
-                        print('1st',row['key'])
-                        jsonStr = json.dumps(wordcount_list)
-                    else:
-                        flag+=1
-                except:
-                        # try three times, three latest records in the view;
-                        # if latest one is not available, try the next available one
-                        if flag >=3:
-                            wordcount_list=row['doc'][param[2:]]
-                            print('2nd', row['key'])
-                            jsonStr = json.dumps(wordcount_list)
-                            break
-                        else:
-                            continue
+            # print(jsonStr)    
             return jsonStr
-    except:
+    except Exception as e:
+        print(e)
         str= 'no implementation'
         return str
 
 
+def get_wordlist_count_until_found(db, view_name, date_list, param):
+    print('HERE')
+    jsonStr = json.dumps([])
+    tries = 0
+    while (tries < 10):
+        # keep going back 1 day
+        # print(date_list[2])
+        if (date_list[2] >= 1):
+            date_list[2] = date_list[2] - 1
+            rows = db.view(view_name, keys=[date_list], include_docs=True)
+            if (len(rows) > 0):
+                for row in rows:
+                    # print(row['doc'][param[2::]])
+                    word_count_list = row['doc'][param[2::]]
+                    jsonStr = json.dumps(word_count_list)
+                    break
+                break
+            tries += 1
+        else:
+            break
+    # print(jsonStr)
+    return jsonStr
+
+
 if __name__ == '__main__':
-    app.run(debug=True, host='172.26.130.99', port='8080')
+    app.run(debug=True, host='localhost', port='8080')

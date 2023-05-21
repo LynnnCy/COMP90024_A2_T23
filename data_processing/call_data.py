@@ -165,34 +165,49 @@ def scatter_plot_note(param):
 
 ##### 4 #####
 # pie chart/ bar chart to show the positive count/ group by emotion type and topic classification for tweet and mastondon
-
-@app.route('/bar_chart_data', methods=['GET', 'POST', 'DELETE'])
-def bar_chart_tweet():
+@app.route('/chart_data', methods=['GET', 'POST', 'DELETE'])
+def chart_data():
     # indicate the db name
     db_name = 'emotion-data-final'
     db = couch[db_name]
     class_ = {}
-    try:
-        if request.method == 'GET':
-            # retrieve the view data
-            rows = db.view('count_class/emtion_classification', group=True)
-            total_emo_view = db.view('count_positive_doc/different pos emotion', group=True)
-            emo_view = [view.value for view in total_emo_view]
-            categories = [row.key.split(':')[1] for row in rows]
-            # create the x-axis categories
-            EMOTION = ['news_&_social_concern', 'diaries_&_daily_life', 'film_tv_&_video', 'celebrity_&_pop_culture', 'food_&_dining', 'arts_&_culture']
-            series = []
-            try:
-                for emotion in EMOTION:
-                    data = [row.value[emotion] for row in rows]
-                    data[0], data[1], data[2] = round(data[0]/emo_view[0]*100), round(data[1]/emo_view[1] *100), round(data[2]/emo_view[2]*100)
-                    series.append({
-                    'name': emotion,
-                    'type': 'bar',
-                    'data': data
-                })
-            except Exception as e:
-                pass
+    if request.method == 'GET':
+        # retrieve the view data
+        rows = db.view('count_class/emtion_classification', group=True)
+        total_emo_view = db.view('count_positive_doc/different pos emotion', group=True)
+        emo_view = [view.value for view in total_emo_view]
+        categories = [row.key.split(':')[1] for row in rows]
+        # create the x-axis categories
+        EMOTION = ['news_&_social_concern', 'diaries_&_daily_life', 'film_tv_&_video', 'celebrity_&_pop_culture', 'food_&_dining', 'arts_&_culture']
+        series = []
+        bench_list = []
+        try:
+            for emotion in EMOTION:
+                data = [row.value[emotion] for row in rows]
+                data[0], data[1], data[2] = round(data[0]/emo_view[0]*100), round(data[1]/emo_view[1] *100), round(data[2]/emo_view[2]*100)
+                total = round((data[0] + data[1] +data[2])/3,3)
+                bench_list.append(total)
+                series.append({
+                'name': emotion,
+                'type': 'bar',
+                'data': data
+            })
+        except Exception as e:
+            pass
+        
+
+        benchmark_line = {
+            'name': 'Benchmark',
+            'type': 'line',
+            'data': bench_list,  # Update with the calculated average percentages
+            'markLine': {
+                'data': [
+                    {'type': 'average', 'name': 'Average'}
+                ]
+            }
+        }
+
+        series.append(benchmark_line)
 
         # create the chart options
         options = {
@@ -207,10 +222,7 @@ def bar_chart_tweet():
         }
 
         jsonStr = json.dumps(options)
-        return jsonStr
-    except:
-        str= 'no implementation'
-        return str
+        return jsonStr  
 
  # bar chart for mastodon
 @app.route('/chart_data_mastodon', methods=['GET', 'POST', 'DELETE'])
@@ -228,10 +240,13 @@ def chart_data_mastodon():
         # create the x-axis categories
         EMOTION = ['sports', 'diaries_&_daily_life', 'news_&_social_concern', 'arts_&_culture', 'music', 'other_hobbies']
         series = []
+        bench_list = []
         try:
             for emotion in EMOTION:
                 data = [row.value[emotion] for row in rows]
                 data[0], data[1], data[2] = round(data[0]/emo_view[0]*100), round(data[1]/emo_view[1] *100), round(data[2]/emo_view[2]*100)
+                total = round((data[0] + data[1] +data[2])/3,3)
+                bench_list.append(total)
                 series.append({
                 'name': emotion,
                 'type': 'bar',
@@ -239,21 +254,35 @@ def chart_data_mastodon():
             })
         except Exception as e:
             pass
+        
 
-    # create the chart options
-    options = {
-        'xAxis': [{
-            'type': 'category',
-            'data': categories
-        }],
-        'yAxis': [{
-            'type': 'value'
-        }],
-        'series': series
-    }
+        benchmark_line = {
+            'name': 'Benchmark',
+            'type': 'line',
+            'data': bench_list,  # Update with the calculated average percentages
+            'markLine': {
+                'data': [
+                    {'type': 'average', 'name': 'Average'}
+                ]
+            }
+        }
 
-    jsonStr = json.dumps(options)
-    return jsonStr
+        series.append(benchmark_line)
+
+        # create the chart options
+        options = {
+            'xAxis': [{
+                'type': 'category',
+                'data': categories
+            }],
+            'yAxis': [{
+                'type': 'value'
+            }],
+            'series': series
+        }
+
+        jsonStr = json.dumps(options)
+        return jsonStr  
 
 ##### 5 ##### word cloud
 @app.route('/word_cloud/<param>', methods=['GET', 'POST', 'DELETE'])

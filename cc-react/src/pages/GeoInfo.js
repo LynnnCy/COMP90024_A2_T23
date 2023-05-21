@@ -10,7 +10,7 @@ import { processPropertyKey } from '../StringUtil'
 const GeoInfo = () => {
     //Map Related State
     const [mapData, setMapData] = useState(null);
-    const [currentMapFeature, setCurrentMapFeature] = useState('total_cnt');
+    const [currentMapFeature, setCurrentMapFeature] = useState('total_tweet_count');
     const [mapPropertyKeys, setMapPropertyKeys] = useState([]);
     const [currentMapFeatureLabel, setCurrentMapFeatureLabel] = useState(processPropertyKey(currentMapFeature));
     //Scatter Related State

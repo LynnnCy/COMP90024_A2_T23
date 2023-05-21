@@ -14,6 +14,7 @@ import { processPropertyKey } from '../StringUtil'
 const ScatterPlot = ({ attributeName }) => {
     const [dataForScatter, setDataForScatter] = useState(null);
     const [loading, setLoading] = useState(true)
+    const [note, setNote] = useState(null)
     const FONT_LABEL_SIZE = 20
     useEffect(() => {
         setLoading(true)
@@ -33,6 +34,13 @@ const ScatterPlot = ({ attributeName }) => {
 
                 ],
             });
+            fetch(`http://172.26.130.99:8080/scatter_plot_note/${attributeName}`).then(nodeResp => nodeResp.json().then(note => {
+                setNote(note)
+                setLoading(false)
+            })).catch(err => {
+                alert(err)
+                setLoading(false)
+            })
         }).catch(err => {
             alert(err)
             setLoading(false)
@@ -64,7 +72,13 @@ const ScatterPlot = ({ attributeName }) => {
     return loading
         ? <LoadingSpinner />
         :
-        <Scatter display options={options} data={dataForScatter} />
+        <>
+            <div>
+                <br />
+                <h5><em><strong>{note}</strong></em></h5>
+            </div>
+            <Scatter display options={options} data={dataForScatter} />
+        </>
 }
 
 ChartJS.register(LinearScale, PointElement, LineElement, Tooltip, Legend);

@@ -49,6 +49,8 @@ const GeoInfo = () => {
                 {
                     mapData !== null
                         ? <>
+                            <br />
+                            <h2 className="text-center"><em>{processPropertyKey(currentMapFeature)}</em></h2>
                             <Row>
                                 <Form.Label><strong>{"Map Attribute: "}</strong>{processPropertyKey(currentMapFeature)}</Form.Label>
                                 <Dropdown>
@@ -72,7 +74,8 @@ const GeoInfo = () => {
                         : <LoadingSpinner />
                 }
                 {/* Scatter */}
-                <hr/>
+                <hr />
+                <h2 className='text-center'><em>{processPropertyKey(currentScatterFeature)}</em></h2>
                 {
                     <Row>
                         <Form.Label>{<strong>Scatter Attribute: </strong>}{processPropertyKey(currentScatterFeature)}</Form.Label>

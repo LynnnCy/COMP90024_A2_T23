@@ -193,8 +193,8 @@ for i in range(len(d1)):
 tweet_total_count_dict.update(d3)
 l1=[]
 for i in tweet_total_count_dict.keys():
-    tweet_total_count_dict[i]['positive_tweet_per']=round(tweet_total_count_dict[i]['positive_tweet_count']/tweet_total_count_dict[i]['total_tweet_count']*100,1)
-    l1.append(tweet_total_count_dict[i]['positive_tweet_per'])
+    tweet_total_count_dict[i]['positive_tweet_percentage']=round(tweet_total_count_dict[i]['positive_tweet_count']/tweet_total_count_dict[i]['total_tweet_count']*100,1)
+    l1.append(tweet_total_count_dict[i]['positive_tweet_percentage'])
 print('----',tweet_total_count_dict)
 print(l1)
 
@@ -226,7 +226,7 @@ with open('sudo_vic_lga_attributes.geojson', 'r') as sudo_file:
             item=tweet_total_count_dict[lga_name]
             gj['features'][i]['properties'].update(item)
         except:
-            fill_dict={'total_tweet_count':0,'positive_tweet_count':0,'positive_tweet_per':0,'negative_tweet_count':0, 'neutral_tweet_count':0,
+            fill_dict={'total_tweet_count':0,'positive_tweet_count':0,'positive_tweet_percentage':0,'negative_tweet_count':0, 'neutral_tweet_count':0,
         'awe_positive':0,'wna_amusement':0,'wna_sadness':0, 'wna_negative_fear':0,
         'wna_anger':0,'wna_annoyance':0,'wna_indifference':0}
             gj['features'][i]['properties'].update(fill_dict)

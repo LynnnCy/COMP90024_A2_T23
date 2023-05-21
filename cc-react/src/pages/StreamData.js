@@ -36,7 +36,7 @@ const StreamData = () => {
     return (
         <PageTransition>
             <Container>
-                <h1>Get Latest Data from Twitter User</h1>
+                <h1>Stream Latest Data from Twitter User</h1>
                 <Form onSubmit={(e) => {
                     e.preventDefault()
                     setCurrentUserName(e.target[0].value.replaceAll('@', ''))

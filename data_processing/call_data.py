@@ -88,6 +88,21 @@ def get_geo_data():
     except:
         str= 'no implementation'
         return str
+@app.route('/intro', methods=['GET'])
+def intro():
+    # indicate the db name
+    db_name = 'lga_geometry_info'
+    db = couch[db_name]
+    try:
+        if request.method == 'GET':
+            rows = db.view('info_view/intro', include_docs=True)
+            for row in rows:
+                note = row['doc']["Introduction"]
+                jsonStr = json.dumps(note)
+        return jsonStr
+    except:
+        str= 'no implementation'
+        return str
 
 
 ##### 3 #####
@@ -131,6 +146,21 @@ def scatter_plot(param):
         str= 'no implementation'
         return str
 
+@app.route('/scatter_plot_note/<param>', methods=['GET'])
+def scatter_plot_note(param):
+    # indicate the db name
+    db_name = 'lga_geometry_info'
+    db = couch[db_name]
+    try:
+        if request.method == 'GET':
+            rows = db.view('info_view/notes', include_docs=True)
+            for row in rows:
+                note= row['doc']["Notes"][param]
+                jsonStr = json.dumps(note)
+        return jsonStr
+    except:
+        str= 'no implementation'
+        return str
 
 
 ##### 4 #####

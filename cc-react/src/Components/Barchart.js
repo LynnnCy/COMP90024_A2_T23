@@ -50,7 +50,7 @@ const ChartComponent = () => {
                                 </Dropdown.Menu>
                             </Dropdown>
                         </Row>
-                        <h1 className="text-center">{"Emotion Data Statistics"}</h1>
+                        <h1 className="text-center">{barChartSource === 'twitter' ? "Twitter: " : "Mastadon: "}{"Emotion Data Statistics"}</h1>
                         <BarChart width={1080} height={650} data={barChartData}>
                             <CartesianGrid strokeDasharray="3 3" />
                             <XAxis dataKey="name" />

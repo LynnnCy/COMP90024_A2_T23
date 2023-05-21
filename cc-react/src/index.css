@@ -20,6 +20,32 @@ li {
   list-style: none;
 }
 
+.nav-link:hover {
+  animation: zoomIn 0.2s forwards ease-in;
+}
+
+.nav-link {
+  animation: zoomOut 0.2s forwards ease-in;
+}
+
+@keyframes zoomIn {
+    0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes zoomOut {
+    0% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .home {
   background-image: url("melb.jpg");
   height: 100vh;

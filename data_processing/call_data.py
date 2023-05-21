@@ -192,6 +192,8 @@ def chart_data_mastodon():
     if request.method == 'GET':
         # retrieve the view data
         rows = db.view('emotion/emotion_class_view', group=True)
+        total_emo_view = db.view('emotion/emotion_view', group=True)
+        emo_view = [view.value for view in total_emo_view]
         categories = [row.key.split(':')[1] for row in rows]
         # create the x-axis categories
         EMOTION = ['sports', 'diaries_&_daily_life', 'news_&_social_concern', 'fashion_&_style', 'music', 'other_hobbies']
@@ -199,6 +201,7 @@ def chart_data_mastodon():
         try:
             for emotion in EMOTION:
                 data = [row.value[emotion] for row in rows]
+                data[0], data[1], data[2] = round(data[0]/emo_view[0]*100), round(data[1]/emo_view[1] *100), round(data[2]/emo_view[2]*100)
                 series.append({
                 'name': emotion,
                 'type': 'bar',

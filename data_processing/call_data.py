@@ -176,6 +176,8 @@ def bar_chart_tweet():
         if request.method == 'GET':
             # retrieve the view data
             rows = db.view('count_class/emtion_classification', group=True)
+            total_emo_view = db.view('count_positive_doc/different pos emotion', group=True)
+            emo_view = [view.value for view in total_emo_view]
             categories = [row.key.split(':')[1] for row in rows]
             # create the x-axis categories
             EMOTION = ['news_&_social_concern', 'diaries_&_daily_life', 'film_tv_&_video', 'celebrity_&_pop_culture', 'food_&_dining', 'arts_&_culture']
@@ -183,6 +185,7 @@ def bar_chart_tweet():
             try:
                 for emotion in EMOTION:
                     data = [row.value[emotion] for row in rows]
+                    data[0], data[1], data[2] = round(data[0]/emo_view[0]*100), round(data[1]/emo_view[1] *100), round(data[2]/emo_view[2]*100)
                     series.append({
                     'name': emotion,
                     'type': 'bar',
@@ -219,13 +222,16 @@ def chart_data_mastodon():
     if request.method == 'GET':
         # retrieve the view data
         rows = db.view('emotion/emotion_class_view', group=True)
+        total_emo_view = db.view('emotion/emotion_view', group=True)
+        emo_view = [view.value for view in total_emo_view]
         categories = [row.key.split(':')[1] for row in rows]
         # create the x-axis categories
-        EMOTION = ['sports', 'diaries_&_daily_life', 'news_&_social_concern', 'fashion_&_style', 'music', 'other_hobbies']
+        EMOTION = ['sports', 'diaries_&_daily_life', 'news_&_social_concern', 'arts_&_culture', 'music', 'other_hobbies']
         series = []
         try:
             for emotion in EMOTION:
                 data = [row.value[emotion] for row in rows]
+                data[0], data[1], data[2] = round(data[0]/emo_view[0]*100), round(data[1]/emo_view[1] *100), round(data[2]/emo_view[2]*100)
                 series.append({
                 'name': emotion,
                 'type': 'bar',

@@ -282,4 +282,4 @@ def get_wordlist_count_until_found(db, view_name, date_list, param):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='localhost', port='8080')
+    app.run(debug=True, host='172.26.130.99', port='8080')

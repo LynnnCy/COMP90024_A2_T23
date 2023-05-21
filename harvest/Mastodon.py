@@ -85,4 +85,4 @@ class Listener(StreamListener):
 
 if __name__ == '__main__':
     print("harvest is listening...")
-    m.stream_local(Listener())
+    m.stream_public(Listener())

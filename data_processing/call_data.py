@@ -196,7 +196,7 @@ def chart_data_mastodon():
         emo_view = [view.value for view in total_emo_view]
         categories = [row.key.split(':')[1] for row in rows]
         # create the x-axis categories
-        EMOTION = ['sports', 'diaries_&_daily_life', 'news_&_social_concern', 'fashion_&_style', 'music', 'other_hobbies']
+        EMOTION = ['sports', 'diaries_&_daily_life', 'news_&_social_concern', 'arts_&_culture', 'music', 'other_hobbies']
         series = []
         try:
             for emotion in EMOTION:

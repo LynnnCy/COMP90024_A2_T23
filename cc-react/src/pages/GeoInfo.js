@@ -43,7 +43,23 @@ const GeoInfo = () => {
         <PageTransition>
             <Container>
                 <br />
-                <h1>SUDO Geographical Data</h1>
+                <h1 className="text-center"><em>Happiness Demographic Data</em></h1>
+                <br />
+                <div>
+                    <p>
+                        Happiness, a state of being often characterized by feelings of joy, satisfaction, and fulfillment, 
+                        can be a somewhat elusive goal with varying definitions from one individual to another. In general, 
+                        it is associated with positive emotions and overall life satisfaction. Leveraging social media, 
+                        we aimed to explore the emotional landscape in the state of Victoria during the turbulent years of the COVID-19 outbreak, 
+                        from 2021 to 2022. Our gauge for happiness was the rate of positive posts. Beyond simply quantifying happiness, 
+                        we also sought to understand the factors that could induce this state of joy and whether there were regional differences in these aspects. 
+                        Our findings have been visualized using various tools, including maps, scatter plots, bar charts, and word clouds, among others. 
+                        In the following section, we compared the analysed results (positive tweet percentage) with multiple datasets 
+                        from SUDO which includes median income, median age, mortgage stress percentage, unemployment rate, education level, 
+                        crime count, etc. Interestingly, our analysis revealed a strong negative correlation between the positive tweet count rate 
+                        and the unemployment rate, albeit with weaker correlations relative to other factors.
+                    </p>
+                </div>
                 <br />
                 {/* Map */}
                 {

@@ -13,9 +13,9 @@ const NavbarCustom = () => {
                     <Nav className="me-auto" activeKey={window.location.pathname}>
                         <Link className='nav-link'  to="/">Home</Link>
                         <Link className='nav-link' to='/trending'>Treding in Twitter</Link>
-                        <Link className='nav-link' to='/map'>SUDO Data</Link>
-                        <Link className='nav-link' to='/visuals'>Visualisations</Link>
-                        <Link className='nav-link' to='/stream'>Stream Data</Link>
+                        <Link className='nav-link' to='/map'>Happiness across Victoria</Link>
+                        <Link className='nav-link' to='/visuals'>Topic of Interest</Link>
+                        <Link className='nav-link' to='/stream'>Twitter Stream</Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

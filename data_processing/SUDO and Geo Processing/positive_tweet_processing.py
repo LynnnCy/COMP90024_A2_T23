@@ -137,7 +137,7 @@ for i in range(len(joined_df)):
         # print(value_list)
         neu_count=total_count-neg_count-pos_count
         if lga_name not in tweet_total_count_dict.keys():
-            tweet_total_count_dict[lga_name]={'total_cnt':total_count,'pos_cnt':pos_count,'neg_cnt':neg_count, 'neu_cnt':neu_count,'awe_positive':awe_positive,'wna_amusement':wna_amusement,'wna_sadness':wna_sadness, 'wna_negative_fear':wna_negative_fear,'wna_anger':wna_anger,'wna_annoyance':wna_annoyance,'wna_indifference':wna_indifference}
+            tweet_total_count_dict[lga_name]={'total_tweet_count':total_count,'positive_tweet_count':pos_count,'negative_tweet_count':neg_count, 'neutral_tweet_count':neu_count,'awe_positive':awe_positive,'wna_amusement':wna_amusement,'wna_sadness':wna_sadness, 'wna_negative_fear':wna_negative_fear,'wna_anger':wna_anger,'wna_annoyance':wna_annoyance,'wna_indifference':wna_indifference}
         else:
             for k in range(len(tweet_total_count_dict[lga_name])):
                 key=list(tweet_total_count_dict[lga_name].keys())[k]
@@ -180,7 +180,7 @@ value_list=list(tweet_total_count_dict[0].values())
 for i in range(len(d1)):
     sumup=sum(d1.values())
     coef=list(d1.values())[i]
-    d2={'total_cnt':0,'pos_cnt':0,'neg_cnt':0, 'neu_cnt':0,
+    d2={'total_tweet_count':0,'positive_tweet_count':0,'negative_tweet_count':0, 'neutral_tweet_count':0,
         'awe_positive':0,'wna_amusement':0,'wna_sadness':0, 'wna_negative_fear':0,
         'wna_anger':0,'wna_annoyance':0,'wna_indifference':0}
     for j in range(len(value_list)):
@@ -219,7 +219,7 @@ with open('sudo_vic_lga_attributes.geojson', 'r') as sudo_file:
             item=tweet_total_count_dict[lga_name]
             gj['features'][i]['properties'].update(item)
         except:
-            fill_dict={'total_cnt':0,'pos_cnt':0,'neg_cnt':0, 'neu_cnt':0,
+            fill_dict={'total_tweet_count':0,'positive_tweet_count':0,'negative_tweet_count':0, 'neutral_tweet_count':0,
         'awe_positive':0,'wna_amusement':0,'wna_sadness':0, 'wna_negative_fear':0,
         'wna_anger':0,'wna_annoyance':0,'wna_indifference':0}
             gj['features'][i]['properties'].update(fill_dict)

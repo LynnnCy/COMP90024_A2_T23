@@ -117,7 +117,7 @@ def scatter_plot(param):
                 try:
                     att_result = round(float(row['doc']['properties'][attributes]), 1)
                     pos_tweet_per = round(
-                        float(row['doc']['properties']['pos_cnt']) / float(row['doc']['properties']['total_cnt']) * 100,
+                        float(row['doc']['properties']['positive_tweet_count']) / float(row['doc']['properties']['total_tweet_count']) * 100,
                         1)
                 except:
                     continue
@@ -249,9 +249,7 @@ def word_cloud(param):
                 else:
                     for row in rows:
                         jsonStr = json.dumps(row['doc'][param[2::]])
-                        break        
-                # print('nothing')
-            # print(jsonStr)    
+                        break
             return jsonStr
     except Exception as e:
         print(e)

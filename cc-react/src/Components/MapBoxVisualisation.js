@@ -81,6 +81,8 @@ const MapBoxVisualisation = ({ data, currentFeature, currentDataLabel: currentFe
                             Full time participation in Secondary School Education at age 16: ${feature.properties['full time participation in Secondary School Education at age 16']} <br>
                             Total Crime Offences Count: ${feature.properties['total_crime_offences_count']} <br>
                             Total Medical Practitioners % Per 100,000: ${feature.properties['total medical practitioners % per 100,000']} <br>
+                            Total Tweet Count: ${feature.properties['total_tweet_count']} <br>
+                            Total Positive Tweet Count: ${feature.properties['positive_tweet_count']} <br>
                             ${currentFeatureLabel}: ${feature.properties[currentFeature]} <br>
                             </strong>`;
 

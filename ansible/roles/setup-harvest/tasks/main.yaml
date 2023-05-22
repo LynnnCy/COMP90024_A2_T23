@@ -6,7 +6,7 @@
 - name: run harvest
   become: true
   become_user: ubuntu
-  ansible.builtin.shell: screen -d -m python3 Mastodon.py --ms_url "{{ item.url }}" --ms_token "{{ item.token }}" --db_name "mastodon"
+  ansible.builtin.shell: screen -d -m python3 Mastodon.py --ms_url "{{ item.url }}" --ms_token "{{ item.token }}" --db_name "mastodon_data_emotion"
   loop: "{{ mastodon }}"
   when: "item.node == ansible_ssh_host"
   async: 45

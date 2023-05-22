@@ -32,7 +32,7 @@ if db_name is None:
     print('CouchDB database name is required')
     exit(1)
 
-couch = couchdb.Server(f'http://admin:admin@0.0.0.0:5984/')
+couch = couchdb.Server(f'http://admin:admin@localhost:5984/')
 
 if db_name not in couch:
     print(f'Database {db_name} does not exist')

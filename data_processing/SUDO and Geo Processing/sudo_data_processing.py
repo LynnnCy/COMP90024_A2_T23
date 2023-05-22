@@ -43,7 +43,7 @@ lga_geo_df.to_file("lga_geo.geojson", driver='GeoJSON')
 # authentication
 admin = 'admin'
 password = 'admin'
-url = f'http://{admin}:{password}@172.26.130.99:5984/'
+url = f'http://{admin}:{password}@localhost:5984/'
 
 # get couchdb instance
 couch = couchdb.Server(url)

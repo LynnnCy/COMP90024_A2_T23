@@ -3,10 +3,22 @@
     src: ~/Server_Magt/COMP90024_A2_T23/harvest/Mastodon.py
     dest: /home/ubuntu/Mastodon.py
 
-- name: run harvest
+- name: copy the dockerfile to remote host
+  ansible.builtin.copy:
+    src: ~/Server_Magt/COMP90024_A2_T23/ansible/docker/Dockerfile
+    dest: /home/ubuntu/Dockerfile
+
+- name: build the docker image
   become: true
   become_user: ubuntu
-  ansible.builtin.shell: screen -d -m python3 Mastodon.py --ms_url "{{ item.url }}" --ms_token "{{ item.token }}" --db_name "mastodon_data_emotion"
+  ansible.builtin.shell: docker build -t mastodon_harvester .
+  args:
+    chdir: /home/ubuntu/
+
+- name: run harvest container
+  become: true
+  become_user: ubuntu
+  ansible.builtin.shell: docker run --network="host" -td --rm --name {{item.name}} mastodon_harvester --ms_url "{{ item.url }}" --ms_token "{{ item.token }}" --db_name "mastodon_data_emotion"
   loop: "{{ mastodon }}"
   when: "item.node == ansible_ssh_host"
   async: 45

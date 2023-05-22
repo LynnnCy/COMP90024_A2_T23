@@ -31,3 +31,4 @@
 
   roles:
     - role: setup-backend
+    - role: setup-frontend

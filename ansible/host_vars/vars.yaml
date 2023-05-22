@@ -5,6 +5,7 @@ toolkits:
   - name: nodejs
   - name: npm
   - name: erlang
+  - name: docker.io
 
 updates:
   - name: pip
@@ -23,14 +24,8 @@ packages:
   - name: flask-restful
   - name: flask-apscheduler
   - name: flasgger
-  - name: scipy
-  - name: mastodon.py
-  - name: requests
-  - name: transformers
-  - name: torch
   - name: nltk
   - name: datetime
-  - name: argparse
 
 npmtools:
   - name: serve
@@ -58,12 +53,15 @@ databases:
   - name: mastodon_data_emotion
 
 mastodon:
-  - url: https://tictoc.social
+  - name: tictoc
+    url: https://tictoc.social
     token: "RL0Lo2zmb6ehX3phnC4L_OjoKBfh91dOuCmZdfqROoQ"
     node: 172.26.129.188
-  - url: https://theblower.au
+  - name: theblower
+    url: https://theblower.au
     token: "rWC3p-QnnPTFyvlNEl92T1dXepFUj0KEWnxey8eKYeY"
     node: 172.26.132.164
-  - url: https://mastodon.au
+  - name: mastodon
+    url: https://mastodon.au
     token: "1-mB5cxh0ONIW95VuDjbcjBAkbL_XY3Vy9vhLZaG4Ag"
     node: 172.26.132.164

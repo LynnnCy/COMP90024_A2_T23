@@ -8,7 +8,7 @@ const StreamData = () => {
     const [currentUserName, setCurrentUserName] = useState(null);
     const [currentData, setCurrentData] = useState(null)
     useEffect(() => {
-        fetch(`http://172.26.130.99:3000/streamData?username=${currentUserName}`).then(respData => {
+        fetch(`http://localhost:3000/streamData?username=${currentUserName}`).then(respData => {
             respData.json().then(respJson => {
                 setCurrentData(respJson)
             })
@@ -27,7 +27,7 @@ const StreamData = () => {
         })
     }
     const updateData = (() => {
-        fetch(`http://172.26.130.99:3000/streamData?username=${currentUserName}`).then(respData => {
+        fetch(`http://localhost:3000/streamData?username=${currentUserName}`).then(respData => {
             respData.json().then(respJson => {
                 setCurrentData(respJson)
             })

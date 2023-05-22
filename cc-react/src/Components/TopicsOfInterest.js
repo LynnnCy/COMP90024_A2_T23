@@ -13,13 +13,13 @@ const TopicsOfInterest = () => {
     const allTopics = ['news & social concern', 'diaries & daily life', 'sports', 'film tv & video & music', 'celebrity & pop culture']
     useEffect(() => {
         async function fetchTopics() {
-            console.log(`http://172.26.130.99:3000/word_cloud/T_${currentTopic}`)
+            console.log(`http://localhost:3000/word_cloud/T_${currentTopic}`)
             try {
-                const twitterResp = await fetch(`http://172.26.130.99:8080/word_cloud/T_${currentTopic}`);
+                const twitterResp = await fetch(`http://localhost:8080/word_cloud/T_${currentTopic}`);
                 const twitterData = await twitterResp.json();
                 setTwitterWordCloudValueList(twitterData)
 
-                const mastadonResp = await fetch(`http://172.26.130.99:8080/word_cloud/M_${currentTopic}`);
+                const mastadonResp = await fetch(`http://localhost:8080/word_cloud/M_${currentTopic}`);
                 const mastadonData = await mastadonResp.json();
                 setMastadonWordCloudValueList(mastadonData)
 

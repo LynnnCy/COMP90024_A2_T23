@@ -25,7 +25,7 @@ standard_lga_locations_list = json.load(f)
 # authentication
 admin = 'admin'
 password = 'admin'
-url = f'http://{admin}:{password}@172.26.130.99:5984/'
+url = f'http://{admin}:{password}@localhost:5984/'
 
 # get couchdb instance
 couch = couchdb.Server(url)
@@ -202,7 +202,7 @@ print(l1)
 # load summary dict into db
 admin = 'admin'
 password = 'admin'
-url = f'http://{admin}:{password}@172.26.130.99:5984/'
+url = f'http://{admin}:{password}@localhost:5984/'
 
 # get couchdb instance
 couch = couchdb.Server(url)

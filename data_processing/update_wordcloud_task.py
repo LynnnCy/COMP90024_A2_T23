@@ -41,7 +41,7 @@ def update_word_cloud_list(data_source,db_name,view_name):
      print('execute task', datetime.datetime.now())
      admin = 'admin'
      password = 'admin'
-     url = f'http://{admin}:{password}@172.26.130.99:5984/'
+     url = f'http://{admin}:{password}@localhost:5984/'
 
      # get couchdb instance
      couch = couchdb.Server(url)

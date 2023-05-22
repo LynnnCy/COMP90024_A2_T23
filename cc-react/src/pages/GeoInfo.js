@@ -18,7 +18,7 @@ const GeoInfo = () => {
         "total medical practitioners % per 100,000", "crime offences count", "population density"]
     const [currentScatterFeature, setCurrentScatterFeature] = useState("median income")
     useEffect(() => {
-        fetch('http://172.26.130.99:8080/getGeoData').then(respData => {
+        fetch('http://localhost:8080/getGeoData').then(respData => {
             respData.json().then(respJson => {
                 processData(respJson)
                 if (mapData === null) {

@@ -10,7 +10,7 @@ const ChartComponent = () => {
     const [barChartData, setBarChartData] = useState(null)
     useEffect(() => {
         console.log('rendering')
-        let fetchUrl = barChartSource === 'twitter' ? 'http://172.26.130.99:8080/bar_chart_data' : 'http://172.26.130.99:8080/chart_data_mastodon';
+        let fetchUrl = barChartSource === 'twitter' ? 'http://localhost:8080/bar_chart_data' : 'http://localhost:8080/chart_data_mastodon';
         if (fetchedData === null) {
             fetch(fetchUrl).then(respData => {
                 respData.json().then(respJson => {

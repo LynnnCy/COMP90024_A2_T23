@@ -18,7 +18,7 @@ const ScatterPlot = ({ attributeName }) => {
     const FONT_LABEL_SIZE = 20
     useEffect(() => {
         setLoading(true)
-        fetch(`http://172.26.130.99:8080/scatter_plot/${attributeName}`).then(resp => resp.json()).then(respJson => {
+        fetch(`http://localhost:8080/scatter_plot/${attributeName}`).then(resp => resp.json()).then(respJson => {
             setLoading(false)
             let processedData = []
             respJson[attributeName].forEach(point => {
@@ -34,7 +34,7 @@ const ScatterPlot = ({ attributeName }) => {
 
                 ],
             });
-            fetch(`http://172.26.130.99:8080/scatter_plot_note/${attributeName}`).then(nodeResp => nodeResp.json().then(note => {
+            fetch(`http://localhost:8080/scatter_plot_note/${attributeName}`).then(nodeResp => nodeResp.json().then(note => {
                 setNote(note)
                 setLoading(false)
             })).catch(err => {

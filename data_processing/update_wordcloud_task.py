@@ -20,8 +20,8 @@ class Config(object):
             'args':('Twitter','emotion-data-final','count_class/top5_topic_positive_tweet'),
             'trigger': 'cron',
             'day': '*',
-            'hour': '16',
-            'minute': '48',
+            'hour': '00',
+            'minute': '30',
             'second': '00'
         },
         {
@@ -30,8 +30,8 @@ class Config(object):
             'args':('Mastodon', 'mastodon_data_emotion', 'emotion/top5_topic_positive_post'),
             'trigger': 'cron',
             'day': '*',
-            'hour': '16',
-            'minute': '52',
+            'hour': '00',
+            'minute': '40',
             'second': '00'
         }
     ]

@@ -5,8 +5,10 @@ const Home = () => {
             <PageTransition>
                 <div className='center' style={{lineHeight: "20rem"}}>
                     <br />
-                    <h1 className='text-center' style={{ color: "white", fontFamily: "impact" }}>Are people really happy?</h1>
-                    <h2 className='text-center' style={{ color: "white", position: 'center', fontFamily: "impact" }}>Let's explore how people share happiness on Social Media</h2>
+                    <div style={{color: "blue"}}>
+                        <h1 className='text-center' style={{ color: "white", fontFamily: "impact" }}>Are people really happy?</h1>
+                        <h2 className='text-center' style={{ color: "white", position: 'center', fontFamily: "impact" }}>Let's explore how people share happiness on Social Media</h2>
+                    </div>
                 </div>
             </PageTransition>
         </div>

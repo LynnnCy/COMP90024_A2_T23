@@ -24,14 +24,13 @@ const TopicsOfInterest = () => {
                 setMastadonWordCloudValueList(mastadonData)
 
                 // let allData = twitterData.concat(mastadonData) 
-
-                setWordCloudValueList(twitterData)
+                currentDataSource === 'Twitter' ? setWordCloudValueList(twitterData) : setWordCloudValueList(mastadonData);
             } catch (err) {
                 console.log(err)
             }
         }
         fetchTopics()
-    }, [currentTopic]);
+    }, [currentTopic, currentDataSource]);
 
     return (
         <>

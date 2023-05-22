@@ -75,7 +75,7 @@ const ScatterPlot = ({ attributeName }) => {
         <>
             <div>
                 <br />
-                <h5><em><strong>{note}</strong></em></h5>
+                <p><em>{processPropertyKey(attributeName)}{": "}{note}</em></p>
             </div>
             <Scatter display options={options} data={dataForScatter} />
         </>

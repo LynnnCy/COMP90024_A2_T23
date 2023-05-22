@@ -43,7 +43,7 @@ const GeoInfo = () => {
         <PageTransition>
             <Container>
                 <br />
-                <h1 className="text-center"><em>Happiness Demographic Data</em></h1>
+                <h1 className="text-center">Happiness Demographic Data</h1>
                 <br />
                 <div>
                     <p>
@@ -66,7 +66,7 @@ const GeoInfo = () => {
                     mapData !== null
                         ? <>
                             <br />
-                            <h2 className="text-center"><em>{processPropertyKey(currentMapFeature)}</em></h2>
+                            <h2 className="text-center">{processPropertyKey(currentMapFeature)}</h2>
                             <Row>
                                 <Form.Label><strong>{"Map Attribute: "}</strong>{processPropertyKey(currentMapFeature)}</Form.Label>
                                 <Dropdown>
@@ -91,10 +91,10 @@ const GeoInfo = () => {
                 }
                 {/* Scatter */}
                 <hr />
-                <h2 className='text-center'><em>{processPropertyKey(currentScatterFeature)}</em></h2>
+                <br />
+                <h2 className='text-center'>{"Positive Tweet Percentage vs " + processPropertyKey(currentScatterFeature)}</h2>
                 {
                     <Row>
-                        <Form.Label>{<strong>Scatter Attribute: </strong>}{processPropertyKey(currentScatterFeature)}</Form.Label>
                         <Dropdown>
                             <Dropdown.Toggle variant="success" id="dropdown-basic">
                                 Change Scatter Attribute

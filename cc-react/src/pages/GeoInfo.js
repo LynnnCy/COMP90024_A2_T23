@@ -33,6 +33,7 @@ const GeoInfo = () => {
                             tempKeys.push(key)
                         }
                     }
+                    tempKeys.sort()
                     setMapPropertyKeys(tempKeys)
                 }
             })

@@ -20,10 +20,10 @@ const ChartComponent = () => {
                         let data = []
                         respJson.series.forEach((curr) => {
                             let dataObject = {
-                                "name": processPropertyKey(curr.name)
+                                "name": processPropertyKey(processPropertyKey(curr.name).replace("Wna:", ""))
                             }
                             respJson.xAxis[0].data.forEach((prop, index) => {
-                                dataObject[prop] = curr.data[index]
+                                dataObject[processPropertyKey(prop)] = curr.data[index]
                             })
                             // data.push({ "name": processPropertyKey(curr.name), "amusement": curr.data[0], "awe": curr.data[1], "joy": curr.data[2] })
                             data.push(dataObject)
@@ -68,25 +68,25 @@ const ChartComponent = () => {
                                 <YAxis />
                                 <Tooltip />
                                 <Legend />
-                                <Bar dataKey="sports" fill="#FF6F61" />
-                                <Bar dataKey="diaries_&_daily_life" fill="#70C1B3" />
-                                <Bar dataKey="news_&_social_concern" fill="#Feb236" />
-                                <Bar dataKey="music" fill="green" />
+                                <Bar dataKey={processPropertyKey("sports")} fill="#FF6F61" />
+                                <Bar dataKey={processPropertyKey("diaries_&_daily_life")} fill="#70C1B3" />
+                                <Bar dataKey={processPropertyKey("news_&_social_concern")} fill="#Feb236" />
+                                <Bar dataKey={processPropertyKey("music")} fill="green" />
                                 {/* {"celebrity_&_pop_culture", "film_tv_&_video", "music"} */}
 
                                 {
                                     barChartSource === 'twitter'
                                         ? <>
-                                            <Bar dataKey="film_tv_&_video" fill="indigo" />
-                                            <Bar dataKey="celebrity_&_pop_culture" fill="brown" />
+                                            <Bar dataKey={processPropertyKey("film_tv_&_video")} fill="indigo" />
+                                            <Bar dataKey={processPropertyKey("celebrity_&_pop_culture")} fill="brown" />
                                         </>
                                         : null
                                 }
                                 {
                                     barChartSource === 'mastadon' ?
                                         <>
-                                            <Bar dataKey="arts_&_culture" fill="gray" />
-                                            <Bar dataKey="other_hobbies" fill="navy" />
+                                            <Bar dataKey={processPropertyKey("arts_&_culture")} fill="gray" />
+                                            <Bar dataKey={processPropertyKey("other_hobbies")} fill="navy" />
                                         </>
                                         : null
                                 }

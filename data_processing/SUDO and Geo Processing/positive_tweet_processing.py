@@ -45,11 +45,10 @@ def get_geo_info():
         if k1 not in view_results.keys():
             view_results[k1]={'bbox':k2,k3:count}
         else:
-            view_results[k1].update({k3:count})
-        # if k1 not in view_results.keys():
-        #     view_results[k1]={'emotion_type':k3,'count':count}
-        # else:
-        #     view_results[k1]['count']+=count
+            if k3 not in view_results[k1].keys():
+                view_results[k1].update({k3:count})
+            else:
+                view_results[k1][k3]= view_results[k1][k3]+count
     return view_results
 
 view_results=get_geo_info()

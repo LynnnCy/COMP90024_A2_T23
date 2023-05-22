@@ -165,8 +165,8 @@ def scatter_plot_note(param):
 
 ##### 4 #####
 # pie chart/ bar chart to show the positive count/ group by emotion type and topic classification for tweet and mastondon
-@app.route('/chart_data', methods=['GET', 'POST', 'DELETE'])
-def chart_data():
+@app.route('/bar_chart_data', methods=['GET', 'POST', 'DELETE'])
+def bar_chart_tweet():
     # indicate the db name
     db_name = 'emotion-data-final'
     db = couch[db_name]
@@ -185,18 +185,11 @@ def chart_data():
         categories = top_classifications
         emo_view = [view.value for view in total_emo_view]
         #categories = [row.key for row in rows]
-
-        
-        
-
         # create the x-axis categories
         EMOTION = ["wna:amusement","wna:awe","wna:joy"]
         #EMOTION = ['news_&_social_concern', 'diaries_&_daily_life', 'film_tv_&_video', 'celebrity_&_pop_culture', 'food_&_dining', 'arts_&_culture']
         series = []
-        
-
         try:
-            
             for emotion in EMOTION:
                 data_values = []
                 for classification in top_classifications:
@@ -217,10 +210,8 @@ def chart_data():
                     'type': 'bar',
                     'data': data_values
                 })
-                
         except Exception as e:
             pass
-    
     # create the chart options
     options = {
         'xAxis': [{
@@ -231,9 +222,8 @@ def chart_data():
             'type': 'value'
         }],
         'series': series,
-        
-    }
 
+    }
     jsonStr = json.dumps(options)
     return jsonStr  
 
@@ -277,10 +267,7 @@ def chart_data_mastodon():
                     elif emotion == 'wna:joy':
                         value = round(value/emo_view[2]*100, 2)
                     data_values.append(value)
-                    
-                #data = [row.value[emotion] for row in rows]
-                #data = [data[classification].get(emotion, 0) for classification in top_classifications]
-                #data[0], data[1], data[2] = round(data[0]/emo_view[0]*100, 2), round(data[1]/emo_view[1]*100, 2), round(data[2]/emo_view[2]*100, 2)
+
                 series.append({
                     'name': emotion,
                     'type': 'bar',

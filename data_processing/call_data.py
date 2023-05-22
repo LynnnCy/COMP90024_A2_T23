@@ -173,56 +173,82 @@ def chart_data():
     class_ = {}
     if request.method == 'GET':
         # retrieve the view data
-        rows = db.view('count_class/emtion_classification', group=True)
+        rows = db.view('count_class/class_each_emo', group=True)
         total_emo_view = db.view('count_positive_doc/different pos emotion', group=True)
+        data = {}
+        for row in rows:
+        
+            classification = row['key']
+            emotions = row['value']
+            data[classification] = emotions
+        top_classifications = sorted(data.keys(), key=lambda x: sum(data[x].values()), reverse=True)[:6]
+        categories = top_classifications
         emo_view = [view.value for view in total_emo_view]
-        categories = [row.key.split(':')[1] for row in rows]
-        # create the x-axis categories
-        EMOTION = ['news_&_social_concern', 'diaries_&_daily_life', 'film_tv_&_video', 'celebrity_&_pop_culture', 'food_&_dining', 'arts_&_culture']
-        series = []
-        bench_list = []
-        try:
-            for emotion in EMOTION:
-                data = [row.value[emotion] for row in rows]
-                data[0], data[1], data[2] = round(data[0]/emo_view[0]*100), round(data[1]/emo_view[1] *100), round(data[2]/emo_view[2]*100)
-                total = round((data[0] + data[1] +data[2])/3,3)
-                bench_list.append(total)
-                series.append({
-                'name': emotion,
-                'type': 'bar',
-                'data': data
-            })
-        except Exception as e:
-            pass
+        #categories = [row.key for row in rows]
+
+        
         
 
-        benchmark_line = {
-            'name': 'Benchmark',
-            'type': 'line',
-            'data': bench_list,  # Update with the calculated average percentages
-            'markLine': {
-                'data': [
-                    {'type': 'average', 'name': 'Average'}
-                ]
-            }
-        }
+        # create the x-axis categories
+        EMOTION = ["wna:amusement","wna:awe","wna:joy"]
+        #EMOTION = ['news_&_social_concern', 'diaries_&_daily_life', 'film_tv_&_video', 'celebrity_&_pop_culture', 'food_&_dining', 'arts_&_culture']
+        series = []
+        
 
-        series.append(benchmark_line)
+        try:
+            
+            for emotion in EMOTION:
+                data_values = []
+                for classification in top_classifications:
+                    value = data[classification].get(emotion, 0)
+                    if emotion == 'wna:amusement':
+                        value = round(value/emo_view[0]*100, 2)
+                    elif emotion == 'wna:awe':
+                        value = round(value/emo_view[1]*100, 2)
+                    elif emotion == 'wna:joy':
+                        value = round(value/emo_view[2]*100, 2)
+                    data_values.append(value)
+                    
+                #data = [row.value[emotion] for row in rows]
+                #data = [data[classification].get(emotion, 0) for classification in top_classifications]
+                #data[0], data[1], data[2] = round(data[0]/emo_view[0]*100, 2), round(data[1]/emo_view[1]*100, 2), round(data[2]/emo_view[2]*100, 2)
+                series.append({
+                    'name': emotion,
+                    'type': 'bar',
+                    'data': data_values
+                })
 
-        # create the chart options
-        options = {
-            'xAxis': [{
-                'type': 'category',
-                'data': categories
-            }],
-            'yAxis': [{
-                'type': 'value'
-            }],
-            'series': series
-        }
+            line_value = 5
+            line_data = [line_value] * len(categories)
 
-        jsonStr = json.dumps(options)
-        return jsonStr  
+            series.append({
+                'name': 'Line',
+                'type': 'line',
+                'data': line_data,
+                'markLine': {
+                    'data': [{'yAxis': line_value}]
+                }
+            })
+                
+                
+        except Exception as e:
+            pass
+    
+    # create the chart options
+    options = {
+        'xAxis': [{
+            'type': 'category',
+            'data': categories
+        }],
+        'yAxis': [{
+            'type': 'value'
+        }],
+        'series': series,
+        
+    }
+
+    jsonStr = json.dumps(options)
+    return jsonStr  
 
  # bar chart for mastodon
 @app.route('/chart_data_mastodon', methods=['GET', 'POST', 'DELETE'])

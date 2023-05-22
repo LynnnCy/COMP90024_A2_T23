@@ -1,10 +1,10 @@
 - name: copy the front-end to remote host
-  ansible.builtin.copy:
+  ansible.builtin.synchronize:
     src: ~/Server_Magt/COMP90024_A2_T23/cc-react/
     dest: /home/ubuntu/cc-react/
 
 - name: copy the harvester to remote host
-  ansible.builtin.copy:
+  ansible.builtin.synchronize:
     src: ~/Server_Magt/COMP90024_A2_T23/tweet-harvestor/
     dest: /home/ubuntu/tweet-harvestor/
 

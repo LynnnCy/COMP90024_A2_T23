@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend, Tooltip } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend, Tooltip, ResponsiveContainer } from 'recharts';
 import { processPropertyKey } from '../StringUtil'
 import { Row } from "react-bootstrap";
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -61,36 +61,39 @@ const ChartComponent = () => {
                         <div className='text-center'>
                             <span>Y-Axis: <em><strong>Topic % in Each Emotion</strong></em></span><span>{" | "}X-Axis: <em><strong>Emotion Type</strong></em></span>
                         </div>
-                        <BarChart width={1080} height={650} data={barChartData}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Legend />
-                            <Bar dataKey="sports" fill="#FF6F61" />
-                            <Bar dataKey="diaries_&_daily_life" fill="#70C1B3" />
-                            <Bar dataKey="news_&_social_concern" fill="#Feb236" />
-                            <Bar dataKey="music" fill="green" />
-                            {/* {"celebrity_&_pop_culture", "film_tv_&_video", "music"} */}
+                        <ResponsiveContainer width="95%" height={650}>
+                            <BarChart data={barChartData}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Bar dataKey="sports" fill="#FF6F61" />
+                                <Bar dataKey="diaries_&_daily_life" fill="#70C1B3" />
+                                <Bar dataKey="news_&_social_concern" fill="#Feb236" />
+                                <Bar dataKey="music" fill="green" />
+                                {/* {"celebrity_&_pop_culture", "film_tv_&_video", "music"} */}
 
-                            {
-                                barChartSource === 'twitter'
-                                    ? <>
-                                        <Bar dataKey="film_tv_&_video" fill="indigo" />
-                                        <Bar dataKey="celebrity_&_pop_culture" fill="brown" />
-                                    </>
-                                    : null
-                            }
-                            {
-                                barChartSource === 'mastadon' ?
-                                    <>
-                                        <Bar dataKey="arts_&_culture" fill="gray" />
-                                        <Bar dataKey="other_hobbies" fill="navy" />
-                                    </>
-                                    : null
-                            }
+                                {
+                                    barChartSource === 'twitter'
+                                        ? <>
+                                            <Bar dataKey="film_tv_&_video" fill="indigo" />
+                                            <Bar dataKey="celebrity_&_pop_culture" fill="brown" />
+                                        </>
+                                        : null
+                                }
+                                {
+                                    barChartSource === 'mastadon' ?
+                                        <>
+                                            <Bar dataKey="arts_&_culture" fill="gray" />
+                                            <Bar dataKey="other_hobbies" fill="navy" />
+                                        </>
+                                        : null
+                                }
 
-                        </BarChart>
+                            </BarChart>
+                        </ResponsiveContainer>
+
                     </>
                     : null
             }

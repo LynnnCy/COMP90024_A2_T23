@@ -10,14 +10,12 @@
 
 - name: build the docker image
   become: true
-  become_user: ubuntu
   ansible.builtin.shell: docker build -t mastodon_harvester .
   args:
     chdir: /home/ubuntu/
 
 - name: run harvest container
   become: true
-  become_user: ubuntu
   ansible.builtin.shell: docker run --network="host" -td --rm --name {{item.name}} mastodon_harvester --ms_url "{{ item.url }}" --ms_token "{{ item.token }}" --db_name "mastodon_data_emotion"
   loop: "{{ mastodon }}"
   when: "item.node == ansible_ssh_host"

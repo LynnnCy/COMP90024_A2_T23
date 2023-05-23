@@ -1,7 +1,7 @@
 # COMP90024 Assignment 2
 # Team: 23
 # City: Victoria
-# Members: Yalin Chen (1218310) Qianchu Li (1433672) Abrar Hayat (1220445) Jie Yang (1290106)
+# Members: Yalin Chen (1218310) Qianchu Li (1433672) Abrar Hayat (1220445) Jie Yang (1290106) Yadvika Jayam Nagaraj Yadav (1406716)
 
 # import libaries
 import geopandas as gpd
@@ -264,4 +264,31 @@ if db_name not in couch:
     print('save sudo attributes to db: sudo_data_load completed')
 else:
     db = couch[db_name]
+
+# load the scatter and introduction into db
+note_dict={'Notes':
+{"positive tweet per": "Positive Tweet Count / Total Tweet Count *100%, where positive tweets come from amusement + joy + awe (positive) emotion classified, total tweet count only counts the tweet with geographical information.",
+"median income": "Employee income is the total (or gross) income received as a return to labour from an employer or from a person's own incorporated business (when they are employed by this business). The data used in deriving employee income comes from both Individual Tax Returns (ITR) and payment summaries (where an individual has not lodged an ITR)(2017-2018)",
+ "median age": "this data is from the ABS Data by Region statistics - Population & People (LGA) (2019-2020) dataset",
+ "mortgage stress %": "Mortgage stress % is calculated on gross income by PHIDU on 2019",
+ "unemployment rate": "The unemployment rate is the percentage of people in the labour force who are unemployed.The data is from the regional estimates from Local Government Area (LGA) at Sep 2021",
+ "education Level": "It is measured by Full-Time Participation In Secondary School Education At Age 16 2016 Urp People Aged 16 (2019)",
+ "total medical practitioners % per 100,000": "Total Medical Practitioners* Rate Per 100,000 People, calculated by PHIDU on 2018",
+ "crime offences count": "the footprint of the number of crime  offences recorded on the Victoria Police Law Enforcement Assistance Program (LEAP) on 2020",
+ "population density (persons/km2)": "as at 30 June  2020 Population density (persons/km2)"}}
+
+intro_dict={"Introduction":"Happiness, a state of being often characterized by feelings of joy, satisfaction, and fulfillment, can be a somewhat elusive goal with varying definitions from one individual to another. In general, it is associated with positive emotions and overall life satisfaction.\nLeveraging social media, we aimed to explore the emotional landscape in the state of Victoria during the turbulent years of the COVID-19 outbreak, from 2021 to 2022. Our gauge for happiness was the rate of positive posts. Beyond simply quantifying happiness, we also sought to understand the factors that could induce this state of joy and whether there were regional differences in these aspects. Our findings have been visualized using various tools, including maps, scatter plots, bar charts, and word clouds, among others.\nIn the following section, we compared the analysed results (positive tweet percentage) with multiple datasets from SUDO which includes median income, median age, mortgage stress percentage, unemployment rate, education level, crime count, etc.Interestingly, our analysis revealed a strong negative correlation between the positive tweet count rate and the unemployment rate, albeit with weaker correlations relative to other factors."}
+
+db_name = 'lga_geometry_info'
+# load the data into database
+if db_name not in couch:
+    db = couch.create(db_name)
+else:
+    db = couch[db_name]
+    entry = json.dumps(note_dict)
+    note_load = json.loads(entry)
+    db.save(note_load)
+    entry = json.dumps(intro_dict)
+    intro_load = json.loads(entry)
+    db.save(intro_load)
 

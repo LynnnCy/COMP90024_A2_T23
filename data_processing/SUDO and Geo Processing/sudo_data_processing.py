@@ -1,16 +1,17 @@
+# COMP90024 Assignment 2
+# Team: 23
+# City: Victoria
+# Members: Yalin Chen (1218310) Qianchu Li (1433672) Abrar Hayat (1220445) Jie Yang (1290106)
+
 # import libaries
 import geopandas as gpd
 from geopandas import GeoDataFrame
 import pandas as pd
 import couchdb
-import json
 import geojson
-from collections import Counter
-import numpy as np
-from array import array
-from shapely.geometry import box
 import wikipedia
 import re
+import json
 
 # 1. construct lga code<>lga name<>lga geometry table
 # read lga geometry
@@ -53,7 +54,6 @@ db_name = 'lga_geometry_info'
 # if not exist, create one
 if db_name not in couch:
     db = couch.create(db_name)
-
     # # # data to be stored
     with open('lga_geo.geojson', 'r') as geo_file:
         gj = geojson.load(geo_file)
@@ -61,6 +61,7 @@ if db_name not in couch:
             entry = json.dumps(gj['features'][i])
             result = json.loads(entry)
             db.save(result)
+    print('save lga geometry to db: lga_geometry_info completed')
 else:
     db = couch[db_name]
 
@@ -88,8 +89,7 @@ for i in range(len(index) - 1):
     locations = [k.strip() for k in info_list[index[i] + 1:index[i + 1] - 1]]
     lga_locations_list[name] = locations
 
-print(lga_locations_list)
-
+# print(lga_locations_list)
 # lga <> standard lga list
 matching_table = {}
 standard_lga = list(lga_geo_df['lga_name'])
@@ -99,7 +99,7 @@ for i in range(len(list(lga_locations_list.keys()))):
         if j in list(lga_locations_list.keys())[i]:
             # print(list(dict1.keys())[i])
             matching_table[list(lga_locations_list.keys())[i].strip()] = j
-print(matching_table)
+# print(matching_table)
 
 # construct standard lga and locations list
 standard_lga_locations_list = {}
@@ -111,27 +111,24 @@ for i in range(len(lga_locations_list.keys())):
     except:
         pass
 print(standard_lga_locations_list)
-print(len(standard_lga_locations_list))
+print('length of standard_lga_locations_list', len(standard_lga_locations_list))
 
-import json
-
-with open('lga_locations_list.json', 'w') as fp:
-    json.dump(lga_locations_list, fp)
 
 # save to couchdb
-# indicate the db name
 db_name = 'lga_locations_list'
-
 # if not exist, create one
 if db_name not in couch:
     db = couch.create(db_name)
+    with open('lga_locations_list.json', 'w') as fp:
+        json.dump(lga_locations_list, fp)
     for i in range(len(standard_lga_locations_list)):
         entry = {list(standard_lga_locations_list.keys())[i]: list(standard_lga_locations_list.values())[i]}
         dump = json.dumps(entry)
         result = json.loads(dump)
         db.save(result)
-# else:
-#     db = couch[db_name]
+    print('save lga location list to db: lga_locations_list completed')
+else:
+    db = couch[db_name]
 
 ### 3. sort sudo data based on lga code, save the sudo attributes table to couchdb
 # Attributes:
@@ -151,7 +148,7 @@ filtered_family_violence.head(5)
 
 lga_attributes_df = pd.merge(lga_geo_df, filtered_family_violence, on='lga_code', how='left')
 print('null value:', lga_attributes_df.isnull().sum())
-print('shape:', lga_attributes_df.shape)
+print('loaded family volence, shape:', lga_attributes_df.shape)
 
 # crime statistics-offences record count 2019
 offences_court = gpd.read_file("./SUDO Format File/crime_stats_offences_recorded_offence_type_lga_2010_2019.json")
@@ -166,7 +163,7 @@ filtered_offences_court.head(5)
 
 lga_attributes_df = pd.merge(lga_attributes_df, filtered_offences_court, on='lga_code', how='left')
 print('null value:', lga_attributes_df.isnull().sum())
-print('shape:', lga_attributes_df.shape)
+print('loaded crime offences, shape:', lga_attributes_df.shape)
 
 # employee income 2017-2018
 employee_income = gpd.read_file("./SUDO Format File/abs_personal_income_employee_income_lga_2011_2018.csv")
@@ -175,18 +172,16 @@ vic_employee_df = employee_income[employee_income['lga_code'].isin(vic_lga_list)
 vic_employee_df = vic_employee_df[
     ['lga_code', 'median_aud_2017_18', 'mean_aud_2017_18', 'median_age_of_earners_years_2017_18',
      'earners_persons_2017_18']]
-print(vic_employee_df.shape)
-vic_employee_df.head(5)
+# print(vic_employee_df.shape)
 
 lga_attributes_df = pd.merge(lga_attributes_df, vic_employee_df, on='lga_code', how='left')
 print('null value:', lga_attributes_df.isnull().sum())
-print('shape:', lga_attributes_df.shape)
+print('loaded employee df, shape:', lga_attributes_df.shape)
 
 # population statistics 2019
 population_df = gpd.read_file('./SUDO Format File/abs_data_by_region_pop_and_people_lga_2011_2019.csv')
 vic_population_df = population_df[population_df['lga_code_2019'].isin(vic_lga_list)]
 print(vic_population_df.shape)
-
 filtered_vic_population_df = vic_population_df[['lga_code_2019', 'estmtd_rsdnt_ppltn_smmry_sttstcs_30_jne_fmls_ttl_nm',
                                                 'population_density_as_at_30_june_population_density_personskm2',
                                                 'estmtd_rsdnt_ppltn_smmry_sttstcs_30_jne_mdn_age_prsns_yrs',
@@ -197,7 +192,7 @@ filtered_vic_population_df.columns = ['lga_code', 'estimated resident population
                                       'median male gae']
 lga_attributes_df = pd.merge(lga_attributes_df, filtered_vic_population_df, on='lga_code', how='left')
 print('null value:', lga_attributes_df.isnull().sum())
-print('shape:', lga_attributes_df.shape)
+print('loaded population_df,shape:', lga_attributes_df.shape)
 
 # housing 2016
 housing_df = gpd.read_file('./SUDO Format File/phidu_housing_transport_lga_2016_20.csv')
@@ -212,7 +207,7 @@ filtered_vic_housing_df.columns = ['lga_code', 'Mortgage stress %', 'Rental stre
 
 lga_attributes_df = pd.merge(lga_attributes_df, filtered_vic_housing_df, on='lga_code', how='left')
 print('null value:', lga_attributes_df.isnull().sum())
-print('shape:', lga_attributes_df.shape)
+print('loaded housing df, shape:', lga_attributes_df.shape)
 
 # health workforce 2018
 health_workforce_df = gpd.read_file('./SUDO Format File/phidu_health_workforce_lga_2018.csv')
@@ -226,7 +221,7 @@ filtered_vic_health_workforce_df.columns = ['lga_code', 'total medical practitio
                                             'total registered nurses % per 100,000']
 lga_attributes_df = pd.merge(lga_attributes_df, filtered_vic_health_workforce_df, on='lga_code', how='left')
 print('null value:', lga_attributes_df.isnull().sum())
-print('shape:', lga_attributes_df.shape)
+print('loaded healthforce df, shape:', lga_attributes_df.shape)
 
 # education 2019
 education_df = gpd.read_file('./SUDO Format File/phidu_education_lga_2016_19.csv')
@@ -237,7 +232,7 @@ filtered_vic_education_df.columns = ['lga_code', 'total population participates 
                                      'full time participation in Secondary School Education at age 16']
 lga_attributes_df = pd.merge(lga_attributes_df, filtered_vic_education_df, on='lga_code', how='left')
 print('null value:', lga_attributes_df.isnull().sum())
-print('shape:', lga_attributes_df.shape)
+print('loaded educationdf, shape:', lga_attributes_df.shape)
 
 # unemployment rate 2020-2021
 unemployment_rate_df = gpd.read_file('./SUDO Format File/dese_salm_lga_asgs_2021_sep_qrt_2021_smhd_lga_unemp_rates.csv')
@@ -246,7 +241,7 @@ vic_unemployment_rate_df = vic_unemployment_rate_df[['lga_code_2021_asgs', 'sep_
 vic_unemployment_rate_df.columns = ['lga_code', 'unemployment rate (sep 21)']
 lga_attributes_df = pd.merge(lga_attributes_df, vic_unemployment_rate_df, on='lga_code', how='left')
 print('null value:', lga_attributes_df.isnull().sum())
-print('shape:', lga_attributes_df.shape)
+print('loaded unemployment rate, shape:', lga_attributes_df.shape)
 
 gdf = GeoDataFrame(lga_attributes_df)
 
@@ -266,6 +261,7 @@ if db_name not in couch:
             result = json.loads(entry)
             # print(result)
             db.save(result)
+    print('save sudo attributes to db: sudo_data_load completed')
 else:
     db = couch[db_name]
 

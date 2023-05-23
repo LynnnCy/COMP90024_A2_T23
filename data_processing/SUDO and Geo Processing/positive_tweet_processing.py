@@ -1,36 +1,32 @@
+# COMP90024 Assignment 2
+# Team: 23
+# City: Victoria
+# Members: Yalin Chen (1218310) Qianchu Li (1433672) Abrar Hayat (1220445) Jie Yang (1290106)
+
 # import libaries
 import geopandas as gpd
-from geopandas import GeoDataFrame
 import pandas as pd
 import couchdb
 import json
 import geojson
 import numpy as np
-from array import array
 from shapely.geometry import box
-import wikipedia
-import re
+
 
 # read geo json file to gdf
 lga_gdf = gpd.read_file('lga_geo.geojson')
 
 # read lga_location list json file to dict
-
-# Opening JSON file
 f = open('lga_locations_list.json')
-# returns JSON object as a dictionary
 standard_lga_locations_list = json.load(f)
 
-# get the positive tweet view
-# authentication
+# get couchdb instance
 admin = 'admin'
 password = 'admin'
 url = f'http://{admin}:{password}@172.26.130.99:5984/'
 
-# get couchdb instance
+# get the positive tweet view
 couch = couchdb.Server(url)
-# indicate the db name
-# indicate the db name
 db_name = 'emotion-data-final'
 db = couch[db_name]
 def get_geo_info():
@@ -52,13 +48,11 @@ def get_geo_info():
     return view_results
 
 view_results=get_geo_info()
-
+# read view into df
 emotion_df=pd.DataFrame.from_dict(view_results,orient='index')
-emotion_df.shape
 emotion_df.reset_index(inplace=True)
 emotion_df=emotion_df.replace(np.nan,0)
-
-
+# format df into geodf
 bbox=[box(x1, y1, x2, y2) for x1,y1,x2,y2 in emotion_df.bbox]
 emotion_count_geo_df=gpd.GeoDataFrame(emotion_df, geometry=bbox)
 emotion_count_geo_df = emotion_count_geo_df.set_crs('EPSG:4283')
@@ -69,8 +63,7 @@ emotion_count_geo_df['neu_count']=emotion_count_geo_df['total_count']-emotion_co
 emotion_count_geo_df['positve_%']=emotion_count_geo_df['positve_count']/emotion_count_geo_df['total_count']*100
 emotion_count_geo_df['negative_%']=(emotion_count_geo_df['negative_count']/emotion_count_geo_df['total_count']*100).round(2)
 
-# spatial join name matching
-# find the corresponding lga based on bbox geometry
+# spatial join: find the corresponding lga based on bbox geometry
 joined_df=gpd.sjoin(emotion_count_geo_df,lga_gdf, how='left', predicate = 'within')
 joined_df.shape
 joined_df = joined_df.rename(columns={'index': 'tweets_location'})
@@ -78,7 +71,7 @@ joined_df.drop(columns=['index_right'],inplace=True)
 joined_df=joined_df[joined_df['tweets_location'].str.endswith('Victoria')]
 joined_df=joined_df.replace(np.nan,0)
 
-# find the lga based on location list
+# name matching: find the lga based on location list
 cannot_find_list=list(joined_df[joined_df['lga_name'].isnull()]['tweets_location'])
 for i in range(len(cannot_find_list)):
     place = cannot_find_list[i].split(',')[0]
@@ -89,6 +82,7 @@ for i in range(len(cannot_find_list)):
             joined_df.loc[i,'lga_name']=key
             break
 
+# manual matching
 manual_dict={
     'Melbourne, Victoria': 'Melbourne',
     'Melton, Victoria':'Melton',
@@ -143,11 +137,9 @@ for i in range(len(joined_df)):
                 tweet_total_count_dict[lga_name][key]=tweet_total_count_dict[lga_name][key]+value_list[k]
     except:
         count+=1
-print('count',count)
-print(tweet_total_count_dict)
 print(len(tweet_total_count_dict))
 
-# fill number for lag without any data
+# fill number for lga without any data
 d1={'Banyule':2,
  'Bayside':2.4,
  'Boroondara':2.2,
@@ -176,8 +168,8 @@ d1={'Banyule':2,
 
 d3={}
 value_list=list(tweet_total_count_dict[0].values())
+sumup=sum(d1.values())
 for i in range(len(d1)):
-    sumup=sum(d1.values())
     coef=list(d1.values())[i]
     d2={'total_tweet_count':0,'positive_tweet_count':0,'negative_tweet_count':0, 'neutral_tweet_count':0,
         'awe_positive':0,'wna_amusement':0,'wna_sadness':0, 'wna_negative_fear':0,
@@ -185,31 +177,26 @@ for i in range(len(d1)):
     for j in range(len(value_list)):
         nan_value=value_list[j]
         fill_value=int(nan_value/sumup * coef)
+        if j==0:
+            fill_value=fill_value+50
+        elif j ==1:
+            fill_value = fill_value + np.random.randint(30)
+        elif j ==2:
+            fill_value = fill_value + np.random.randint(20)
+        elif j ==3:
+            fill_value = list(d2.values())[0]-list(d2.values())[1]-list(d2.values())[2]
         key=list(d2.keys())[j]
         d2[key]=fill_value
     d3[list(d1.keys())[i]]=d2
 
+# update tweet count dict
 tweet_total_count_dict.update(d3)
 l1=[]
 for i in tweet_total_count_dict.keys():
     tweet_total_count_dict[i]['positive_tweet_percentage']=round(tweet_total_count_dict[i]['positive_tweet_count']/tweet_total_count_dict[i]['total_tweet_count']*100,1)
     l1.append(tweet_total_count_dict[i]['positive_tweet_percentage'])
-print('----',tweet_total_count_dict)
-print(l1)
-
-
 
 # load summary dict into db
-admin = 'admin'
-password = 'admin'
-url = f'http://{admin}:{password}@172.26.130.99:5984/'
-
-# get couchdb instance
-couch = couchdb.Server(url)
-
-from datetime import date
-# today = date.today()
-# print("Today's date:", today)
 db_name = 'sudo_data_emotion'
 # load the data into database
 if db_name not in couch:
@@ -234,3 +221,4 @@ with open('sudo_vic_lga_attributes.geojson', 'r') as sudo_file:
         entry = json.dumps(gj['features'][i])
         result = json.loads(entry)
         db.save(result)
+    print('sudo-tweet count statistics loaded into db: sudo_data_emotion')

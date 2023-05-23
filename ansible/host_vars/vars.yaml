@@ -65,3 +65,5 @@ mastodon:
     url: https://mastodon.au
     token: "1-mB5cxh0ONIW95VuDjbcjBAkbL_XY3Vy9vhLZaG4Ag"
     node: 172.26.132.164
+
+data_url: https://www.dropbox.com/s/r6l4ke6h858bzph/twitter-huge.json.zip?dl=1

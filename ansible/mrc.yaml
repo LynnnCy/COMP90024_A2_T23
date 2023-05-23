@@ -1,28 +1,12 @@
-# - hosts: test
-#   vars_files:
-#     - host_vars/vars.yaml
-#   gather_facts: true
+- hosts: test
+  vars_files:
+    - host_vars/vars.yaml
+  gather_facts: true
 
-#   roles:
-#     - role: setup-install
-#     - role: setup-couchdb
-
-# - hosts: test_01
-#   vars_files:
-#     - host_vars/vars.yaml
-#   gather_facts: true
-
-#   roles:
-#     - role: setup-cluster
-#     - role: setup-database
-  
-# - hosts: test_01
-#   vars_files:
-#     - host_vars/vars.yaml
-#   gather_facts: true
-
-#   roles:
-#     - role: setup-harvest
+  roles:
+    - role: setup-install
+    - role: setup-couchdb
+    # - role: setup-volume
 
 - hosts: test_01
   vars_files:
@@ -30,5 +14,22 @@
   gather_facts: true
 
   roles:
-    # - role: setup-backend
+    - role: setup-cluster
+    - role: setup-database
+  
+- hosts: test
+  vars_files:
+    - host_vars/vars.yaml
+  gather_facts: true
+
+  roles:
+    - role: setup-harvest
+
+- hosts: test_01
+  vars_files:
+    - host_vars/vars.yaml
+  gather_facts: true
+
+  roles:
+    - role: setup-backend
     - role: setup-frontend

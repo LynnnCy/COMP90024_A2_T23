@@ -1,0 +1,5 @@
+- name: download the twitter data from drive
+  become: true
+  ansible.builtin.command: wget -O "{{ data_url }}"
+  args:
+    chdir: /home/ubuntu/sudo/

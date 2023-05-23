@@ -1,6 +1,10 @@
+# COMP90024 Assignment 2
+# Team: 23
+# City: Victoria
+# Members: Yalin Chen (1218310) Qianchu Li (1433672) Abrar Hayat (1220445) Jie Yang (1290106) Yadvika Jayam Nagaraj Yadav (1406716)
+
 from flask_apscheduler import APScheduler
-from flask import Flask, render_template, request,jsonify
-from flask_restful import Api, Resource
+from flask import Flask
 import couchdb
 import json
 import collections

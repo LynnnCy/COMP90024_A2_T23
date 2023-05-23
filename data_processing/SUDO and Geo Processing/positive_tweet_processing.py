@@ -1,7 +1,7 @@
 # COMP90024 Assignment 2
 # Team: 23
 # City: Victoria
-# Members: Yalin Chen (1218310) Qianchu Li (1433672) Abrar Hayat (1220445) Jie Yang (1290106)
+# Members: Yalin Chen (1218310) Qianchu Li (1433672) Abrar Hayat (1220445) Jie Yang (1290106) Yadvika Jayam Nagaraj Yadav (1406716)
 
 # import libaries
 import geopandas as gpd

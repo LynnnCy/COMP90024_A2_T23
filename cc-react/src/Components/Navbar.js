@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const NavbarCustom = () => {
     return (
-        <Navbar bg="dark" variant="dark">
+        <Navbar bg="dark" variant="dark" expand="lg">
             <Container>
                 <Link className='navbar-brand' to="/"><img width={"35rem"} alt="logo" src='logo.jpg'/>Team 23</Link>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />

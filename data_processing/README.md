@@ -19,8 +19,8 @@ Data Processing/
 │   └── sudo_data_processing.py   -> processed sudo data, construct lga attributes dict  
 │   └── positive_tweet_processing.py   -> summary tweet count by lga   
 │   └── sudo_vic_lga_attributes.geojson   -> sudo geojson file, used to stored to db  
-│   └── lga_geo.geojson   -> processed from sudo_data_processing.py
+│   └── lga_geo.geojson   -> processed from sudo_data_processing.py  
 │   └── lga_locations_list.json   -> processed from sudo_data_processing.py
-│── call_data.py           -> backend endpoints
+│── call_data.py           -> backend endpoints  
 │── update_wordcloud_task.py        -> pre-processed wordcloud schedulers
 └── README.md            -> Readme

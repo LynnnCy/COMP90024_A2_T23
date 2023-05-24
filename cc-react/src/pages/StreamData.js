@@ -11,15 +11,21 @@ import { Container, Row, Form, FormGroup, Button } from "react-bootstrap";
 import { Input } from 'reactstrap';
 import LoadingSpinner from '../Components/LoadingSpinner';
 import PageTransition from '../Components/PageTransition';
+import ErrorModal from "../Components/ErrorModal";
 
 const StreamData = () => {
     const [currentUserName, setCurrentUserName] = useState(null);
     const [currentData, setCurrentData] = useState(null)
+    const [errorModalVisible, setErrorModalVisible] = useState(false)
     useEffect(() => {
         fetch(`http://172.26.130.99:3000/streamData?username=${currentUserName}`).then(respData => {
             respData.json().then(respJson => {
                 setCurrentData(respJson)
+            }).catch(err => {
+                setErrorModalVisible(true)
             })
+        }).catch(err => {
+            setErrorModalVisible(true)
         })
     }, [currentUserName])
     const renderStream = () => {
@@ -38,13 +44,18 @@ const StreamData = () => {
         fetch(`http://172.26.130.99:3000/streamData?username=${currentUserName}`).then(respData => {
             respData.json().then(respJson => {
                 setCurrentData(respJson)
+            }).catch(err => {
+                setErrorModalVisible(true)
             })
+        }).catch(err => {
+            setErrorModalVisible(true)
         })
     })
     return (
         <PageTransition>
             <Container>
                 <h1>Stream Latest Data from Twitter User</h1>
+                <ErrorModal visible={errorModalVisible} setVisible={setErrorModalVisible} />
                 <Form onSubmit={(e) => {
                     e.preventDefault()
                     setCurrentUserName(e.target[0].value.replaceAll('@', ''))

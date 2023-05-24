@@ -11,11 +11,13 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend, Tooltip, Responsive
 import { processPropertyKey } from '../StringUtil'
 import { Row } from "react-bootstrap";
 import Dropdown from 'react-bootstrap/Dropdown';
+import ErrorModal from "../Components/ErrorModal";
 
 const ChartComponent = () => {
     const [barChartSource, setBarChartSource] = useState('twitter')
     const [fetchedData, setFetchedData] = useState(null);
     const [barChartData, setBarChartData] = useState(null)
+    const [errorModalVisible, setErrorModalVisible] = useState(false)
     useEffect(() => {
         // console.log(fetchedData)
         let fetchUrl = barChartSource === 'twitter' ? 'http://172.26.130.99:8080/bar_chart_data' : 'http://172.26.130.99:8080/chart_data_mastodon';
@@ -38,7 +40,11 @@ const ChartComponent = () => {
                         })
                         setBarChartData(data)
                     }
+                }).catch(err => {
+                    setErrorModalVisible(true)
                 })
+            }).catch(err => {
+                setErrorModalVisible(true)
             })
         }
     }, [barChartSource, barChartData, fetchedData])
@@ -105,6 +111,7 @@ const ChartComponent = () => {
                     </>
                     : null
             }
+            <ErrorModal visible={errorModalVisible} setVisible={setErrorModalVisible} />
         </div>
 
     );

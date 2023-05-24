@@ -11,8 +11,11 @@ import PageTransition from '../Components/PageTransition';
 import WordCloud from '../Components/WordCloud';
 import LoadingSpinner from '../Components/LoadingSpinner';
 import { getWordCloudValueList } from '../StringUtil'
+import ErrorModal from "../Components/ErrorModal";
+
 const TwitterTrends = () => {
     const [wordCloudValueList, setWordCloudValueList] = useState([])
+    const [errorModalVisible, setErrorModalVisible] = useState(false)
     useEffect(() => {
         async function fetchTweets() {
             try {
@@ -31,6 +34,7 @@ const TwitterTrends = () => {
                 })
                 setWordCloudValueList(getWordCloudValueList(tweetWordMap))
             } catch (err) {
+                setErrorModalVisible(true)
                 console.log(err)
             }
         }
@@ -46,6 +50,7 @@ const TwitterTrends = () => {
                     :
                     <LoadingSpinner />
             }
+            <ErrorModal visible={errorModalVisible} setVisible={setErrorModalVisible} />
         </PageTransition>
     )
 };

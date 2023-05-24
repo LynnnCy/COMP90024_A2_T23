@@ -18,11 +18,13 @@ import { Scatter } from 'react-chartjs-2';
 import { useEffect, useState } from 'react';
 import LoadingSpinner from './LoadingSpinner';
 import { processPropertyKey } from '../StringUtil'
+import ErrorModal from './ErrorModal';
 
 const ScatterPlot = ({ attributeName }) => {
     const [dataForScatter, setDataForScatter] = useState(null);
     const [loading, setLoading] = useState(true)
     const [note, setNote] = useState(null)
+    const [errorModalVisible, setErrorModalVisible] = useState(false)
     const FONT_LABEL_SIZE = 20
     useEffect(() => {
         setLoading(true)
@@ -46,12 +48,12 @@ const ScatterPlot = ({ attributeName }) => {
                 setNote(note)
                 setLoading(false)
             })).catch(err => {
-                alert(err)
+                setErrorModalVisible(true)
                 setLoading(false)
             })
         }).catch(err => {
-            alert(err)
             setLoading(false)
+            setErrorModalVisible(true)
         })
     }, [attributeName])
     let options = {
@@ -86,6 +88,7 @@ const ScatterPlot = ({ attributeName }) => {
                 <p><em>{processPropertyKey(attributeName)}{": "}{note}</em></p>
             </div>
             <Scatter display options={options} data={dataForScatter} />
+            <ErrorModal visible={errorModalVisible} setVisible={setErrorModalVisible}/>
         </>
 }
 

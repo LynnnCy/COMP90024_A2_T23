@@ -12,12 +12,15 @@ import LoadingSpinner from '../Components/LoadingSpinner';
 import { Container, Row } from "react-bootstrap";
 import Dropdown from 'react-bootstrap/Dropdown';
 import { processPropertyKey } from '../StringUtil'
+import ErrorModal from "../Components/ErrorModal";
+
 const TopicsOfInterest = () => {
     const [wordCloudValueList, setWordCloudValueList] = useState(null)
     const [twitterWordCloudValueList, setTwitterWordCloudValueList] = useState(null)
     const [mastadonWordCloudValueList, setMastadonWordCloudValueList] = useState(null)
     const [currentTopic, setCurrentTopic] = useState('news & social concern')
     const [currentDataSource, setCurrentDataSource] = useState('Twitter')
+    const [errorModalVisible, setErrorModalVisible] = useState(false)
     const allTopics = ['news & social concern', 'diaries & daily life', 'sports', 'film tv & video & music', 'celebrity & pop culture']
     useEffect(() => {
         async function fetchTopics() {
@@ -35,6 +38,7 @@ const TopicsOfInterest = () => {
                 currentDataSource === 'Twitter' ? setWordCloudValueList(twitterData) : setWordCloudValueList(mastadonData);
             } catch (err) {
                 console.log(err)
+                setErrorModalVisible(true)
             }
         }
         fetchTopics()
@@ -83,6 +87,7 @@ const TopicsOfInterest = () => {
                     <LoadingSpinner />
             }
             <br />
+            <ErrorModal visible={errorModalVisible} setVisible={setErrorModalVisible} />
         </>
     )
 };

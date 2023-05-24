@@ -14,6 +14,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import { Container, Row, Form } from "react-bootstrap";
 import ScatterPlot from "../Components/ScatterPlot";
 import { processPropertyKey } from '../StringUtil'
+import ErrorModal from "../Components/ErrorModal";
 
 const GeoInfo = () => {
     //Map Related State
@@ -21,6 +22,7 @@ const GeoInfo = () => {
     const [currentMapFeature, setCurrentMapFeature] = useState('positive_tweet_percentage');
     const [mapPropertyKeys, setMapPropertyKeys] = useState([]);
     const [currentMapFeatureLabel, setCurrentMapFeatureLabel] = useState(processPropertyKey(currentMapFeature));
+    const [errorModalVisible, setErrorModalVisible] = useState(false)
     //Scatter Related State
     const scatterFeatures = ["median income", "median age", "mortgage stress %", "unemployment rate", "education level",
         "total medical practitioners % per 100,000", "crime offences count", "population density"]
@@ -44,7 +46,11 @@ const GeoInfo = () => {
                     tempKeys.sort()
                     setMapPropertyKeys(tempKeys)
                 }
+            }).catch(err => {
+                setErrorModalVisible(true)
             })
+        }).catch(err => {
+            setErrorModalVisible(true)
         })
     }, [mapData, setMapPropertyKeys]);
 
@@ -71,6 +77,7 @@ const GeoInfo = () => {
                 </div>
                 <br />
                 {/* Map */}
+                {<ErrorModal visible={errorModalVisible} setVisible={setErrorModalVisible} />}
                 {
                     mapData !== null
                         ? <>

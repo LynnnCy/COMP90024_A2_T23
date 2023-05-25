@@ -1,0 +1,16 @@
+- name: copy the SUDO data to remote host
+  ansible.builtin.synchronize:
+    src: ~/Server_Magt/COMP90024_A2_T23/data_processing/sudo_and_geo_processing/
+    dest: /home/ubuntu/sudo/
+
+- name: start sudo data processing and upload
+  become: true
+  ansible.builtin.command: python3 sudo_data_processing.py
+  args:
+    chdir: /home/ubuntu/sudo/
+
+- name: start twitter data analysis
+  become: true
+  ansible.builtin.command: python3 positive_tweet_processing.py
+  args:
+    chdir: /home/ubuntu/sudo/

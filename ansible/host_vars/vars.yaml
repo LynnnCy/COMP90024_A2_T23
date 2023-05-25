@@ -5,6 +5,7 @@ toolkits:
   - name: nodejs
   - name: npm
   - name: erlang
+  - name: docker.io
 
 updates:
   - name: pip
@@ -22,15 +23,10 @@ packages:
   - name: flask
   - name: flask-restful
   - name: flask-apscheduler
+  - name: flask-cors
   - name: flasgger
-  - name: scipy
-  - name: mastodon.py
-  - name: requests
-  - name: transformers
-  - name: torch
   - name: nltk
   - name: datetime
-  - name: argparse
 
 npmtools:
   - name: serve
@@ -48,8 +44,8 @@ uuid: 7c71ec1aacc68b37b6e13a0e4c012a7c
 secret: 7c71ec1aacc68b37b6e13a0e4c01339e
 
 node_urls:
-  - name: 172.26.129.188
-  - name: 172.26.132.164
+  - name: 172.26.136.153
+  - name: 172.26.129.245
 
 shards: 6
 copies: 2
@@ -58,12 +54,17 @@ databases:
   - name: mastodon_data_emotion
 
 mastodon:
-  - url: https://tictoc.social
+  - name: tictoc
+    url: https://tictoc.social
     token: "RL0Lo2zmb6ehX3phnC4L_OjoKBfh91dOuCmZdfqROoQ"
-    node: 172.26.129.188
-  - url: https://theblower.au
+    node: 172.26.136.153
+  - name: theblower
+    url: https://theblower.au
     token: "rWC3p-QnnPTFyvlNEl92T1dXepFUj0KEWnxey8eKYeY"
-    node: 172.26.132.164
-  - url: https://mastodon.au
+    node: 172.26.129.245
+  - name: mastodon
+    url: https://mastodon.au
     token: "1-mB5cxh0ONIW95VuDjbcjBAkbL_XY3Vy9vhLZaG4Ag"
-    node: 172.26.132.164
+    node: 172.26.129.245
+
+data_url: https://www.dropbox.com/s/r6l4ke6h858bzph/twitter-huge.json.zip?dl=1

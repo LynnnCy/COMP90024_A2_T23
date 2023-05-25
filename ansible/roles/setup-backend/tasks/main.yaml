@@ -3,8 +3,18 @@
     src: ~/Server_Magt/COMP90024_A2_T23/data_processing/call_data.py
     dest: /home/ubuntu/back_end.py
 
+- name: copy the data-process to remote host
+  ansible.builtin.copy:
+    src: ~/Server_Magt/COMP90024_A2_T23/data_processing/update_wordcloud_task.py
+    dest: /home/ubuntu/update_wordcloud_task.py
+
+- name: run data-process
+  become_user: ubuntu
+  ansible.builtin.shell: screen -d -m python3 update_wordcloud_task.py
+  async: 45
+  poll: 0
+
 - name: run back-end
-  become: true
   become_user: ubuntu
   ansible.builtin.shell: screen -d -m python3 back_end.py
   async: 45

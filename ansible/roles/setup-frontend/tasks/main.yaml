@@ -1,0 +1,38 @@
+- name: copy the front-end to remote host
+  ansible.builtin.synchronize:
+    src: ~/Server_Magt/COMP90024_A2_T23/cc-react/
+    dest: /home/ubuntu/cc-react/
+
+- name: copy the harvester to remote host
+  ansible.builtin.synchronize:
+    src: ~/Server_Magt/COMP90024_A2_T23/tweet-harvestor/
+    dest: /home/ubuntu/tweet-harvestor/
+
+- name: run trending harvester
+  become_user: ubuntu
+  ansible.builtin.shell: forever start server.js
+  args:
+    chdir: /home/ubuntu/tweet-harvestor/
+  async: 45
+  poll: 0
+
+- name: download dependencies
+  become_user: ubuntu
+  ansible.builtin.shell: npm install --force
+  args:
+    chdir: /home/ubuntu/cc-react/
+
+- name: build the project
+  become_user: ubuntu
+  ansible.builtin.shell: npm run build
+  args:
+    chdir: /home/ubuntu/cc-react/
+
+- name: run front-end server
+  become: true
+  become_user: ubuntu
+  ansible.builtin.shell: forever start server.js
+  args:
+    chdir: /home/ubuntu/cc-react/
+  async: 45
+  poll: 0

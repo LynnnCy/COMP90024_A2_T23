@@ -1,0 +1,13 @@
+- name: format the volume
+  become: true
+  ansible.builtin.command: mkfs.ext4 /dev/vdb
+
+- name: mount the volume
+  become: true
+  ansible.builtin.command: mount /dev/vdb /var/snap/couchdb/common/data
+
+- name: persist the mounting
+  become: true
+  ansible.builtin.command: sed -i '$a\'"/dev/vdb /var/snap/couchdb/common/data ext4 defaults 0 1" fstab
+  args:
+    chdir: /etc/

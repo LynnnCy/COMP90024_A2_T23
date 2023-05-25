@@ -6,7 +6,7 @@
   roles:
     - role: setup-install
     - role: setup-couchdb
-    # - role: setup-volume
+    - role: setup-volume
 
 - hosts: test_01
   vars_files:

@@ -25,11 +25,11 @@
   roles:
     - role: setup-harvest
 
-- hosts: test_01
-  vars_files:
-    - host_vars/vars.yaml
-  gather_facts: true
+# - hosts: server_02
+#   vars_files:
+#     - host_vars/vars.yaml
+#   gather_facts: true
 
-  roles:
-    - role: setup-backend
-    - role: setup-frontend
+#   roles:
+#     - role: setup-backend
+#     - role: setup-frontend

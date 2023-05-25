@@ -23,6 +23,7 @@ packages:
   - name: flask
   - name: flask-restful
   - name: flask-apscheduler
+  - name: flask-cors
   - name: flasgger
   - name: nltk
   - name: datetime
